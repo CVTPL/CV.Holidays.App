@@ -1,0 +1,16 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.15.2",
+    "libraryName": "cv-holidays-app",
+    "libraryId": "58914319-e5ab-452a-b91a-856210fdf8c6",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "cv-holidays-app",
+    "solutionShortDescription": "cv-holidays-app description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
