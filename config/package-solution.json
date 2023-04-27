@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "cv-holidays-app-client-side-solution",
+    "name": "cv-holidays-app",
     "id": "58914319-e5ab-452a-b91a-856210fdf8c6",
     "version": "1.0.0.0",
     "includeClientSideAssets": true,
@@ -30,7 +30,15 @@
         "title": "cv-holidays-app Feature",
         "description": "The feature that activates elements of the cv-holidays-app solution.",
         "id": "2977ab9b-6f43-447d-8d9b-3b958ed44824",
-        "version": "1.0.0.0"
+        "version": "1.0.0.0",
+        "assets": {
+          "elementManifests": [
+            "Holiday_Details.xml"
+          ],
+          "elementFiles": [
+            "Holiday_Details_Schema.xml"
+          ]
+        }
       }
     ]
   },
