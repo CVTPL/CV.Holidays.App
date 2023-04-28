@@ -8,8 +8,14 @@ CV Holidays - Festivals and Holidays web part is a powerful tool for SharePoint 
 Additionally, including external links provides users with even more resources and information about each event, whether collaborating with colleagues or simply keeping track of important dates.
 
 <!-- [picture of the solution in action, if possible] -->
+## Screenshots
+> List View
 ![Alt text](/src/assets/img/screenshots/List-View.png?raw=true "List View")
+
+> Card View
 ![Alt text](/src/assets/img/screenshots/Card-View.png?raw=true "Card View")
+
+> SharePoint List
 ![Alt text](/src/assets/img/screenshots/SharePoint_List.png?raw=true "SharePoint List")
 
 ## Used SharePoint Framework Version
