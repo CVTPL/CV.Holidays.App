@@ -2,6 +2,7 @@
 logs
 *.log
 npm-debug.log*
+package-solution.json
 
 # Dependency directories
 node_modules
@@ -32,3 +33,6 @@ obj
 
 # Styles Generated Code
 *.scss.ts
+
+# production
+/config
