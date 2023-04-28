@@ -8,11 +8,11 @@
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
     "developer": {
-      "name": "",
-      "websiteUrl": "",
-      "privacyUrl": "",
-      "termsOfUseUrl": "",
-      "mpnId": "Undefined-1.15.2"
+      "name": "CODEVISION TECHNOLOGIES PRIVATE LIMITED",
+      "websiteUrl": "https://thecodevision.com",
+      "privacyUrl": "https://thecodevision.com/privacy-policy/",
+      "termsOfUseUrl": "https://go.microsoft.com/fwlink/?linkid=2041178",
+      "mpnId": "6360355-1.15.2"
     },
     "metadata": {
       "shortDescription": {

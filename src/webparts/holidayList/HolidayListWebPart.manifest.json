@@ -18,12 +18,12 @@
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
     "group": { "default": "Advanced" },
-    "title": { "default": "Holiday List" },
-    "description": { "default": "Holiday Details Webpart" },
+    "title": { "default": "CV Holidays" },
+    "description": { "default": "Holiday Webpart" },
     "officeFabricIconFontName": "PublicCalendar",
     "properties": {
-      "description": "Holiday List",
-      "webpartTitle":"Current Year Holidays"
+      "description": "",
+      "webpartTitle":"Holidays"
     }
   }]
 }

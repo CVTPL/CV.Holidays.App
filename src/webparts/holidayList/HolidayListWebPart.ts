@@ -43,8 +43,6 @@ export default class HolidayListWebPart extends BaseClientSideWebPart<IHolidayLi
 
   protected onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
-    console.log(this.context);
-    
     return super.onInit();
   }
 

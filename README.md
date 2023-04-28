@@ -2,9 +2,15 @@
 
 ## Summary
 
-Short summary on functionality and used technologies.
+<!-- Short summary on functionality and used technologies. -->
+CV Holidays - Festivals and Holidays web part is a powerful tool for SharePoint users who want to keep track of important dates and events. With the ability to customize the layout, users can easily view a list of festivals and holidays. The web part also allows users to add festival and holiday details, which will appear on the SharePoint site page. 
 
-[picture of the solution in action, if possible]
+Additionally, including external links provides users with even more resources and information about each event, whether collaborating with colleagues or simply keeping track of important dates.
+
+<!-- [picture of the solution in action, if possible] -->
+![Alt text](/src/assets/img/screenshots/List-View.png?raw=true "List View")
+![Alt text](/src/assets/img/screenshots/Card-View.png?raw=true "Card View")
+![Alt text](/src/assets/img/screenshots/SharePoint_List.png?raw=true "SharePoint List")
 
 ## Used SharePoint Framework Version
 

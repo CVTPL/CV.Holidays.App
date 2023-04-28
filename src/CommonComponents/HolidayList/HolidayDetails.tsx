@@ -57,7 +57,7 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
                 <div className="ms-Grid-row">
                     <div className="title-with-choicegroup-box">
                         <h2 className="page-title">{props.title}</h2>
-                        <ChoiceGroup defaultSelectedKey={selectedView} className="switch-button-container" options={options} onChange={_onChange} />
+                        <ChoiceGroup defaultSelectedKey={selectedView} className="switch-button-container" options={options} onChange={_onChangeChoiceGroup} />
                     </div>
                 </div>
             </div>
@@ -197,7 +197,7 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
      * @param ev 
      * @param option 
      */
-    function _onChange(ev: React.FormEvent<HTMLInputElement>, option: IChoiceGroupOption): void {
+    function _onChangeChoiceGroup(ev: React.FormEvent<HTMLInputElement>, option: IChoiceGroupOption): void {
         setSelectedView(option.key)
     }
 };
