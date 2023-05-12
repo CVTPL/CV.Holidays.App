@@ -35,9 +35,9 @@ Additionally, including external links provides users with even more resources a
 
 ## Solution
 
-| Solution    | Author(s)                                               |
-| ----------- | ------------------------------------------------------- |
-| folder name | Author details (name, company, twitter alias with link) |
+| Solution    | Author(s)                                                                                                                     |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| CV Holidays | [Jinesh Shah](https://in.linkedin.com/in/shahjinesh11) ([CODEVISION TECHNOLOGIES PRIVATE LIMITED](https://thecodevision.com)) |
 
 ## Version history
 
