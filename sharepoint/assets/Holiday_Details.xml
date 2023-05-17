@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+
+    <Field Type="Text"
+        ID="{c6f2163a-f7d5-4574-9836-3a421292293f}"
+        Name="CV_Festival_Name"
+        DisplayName="Festival Name"
+        Required="TRUE"
+        Group="_CV"
+    />
+
+    <Field Type="DateTime"
+        ID="{6e80def4-250e-4faa-ba84-ba23c4068beb}"
+        Name="CV_Festival_Date"
+        DisplayName="Festival Date"
+        Required="TRUE"
+        StaticName="CV_PGA_DateJoinGroup"
+        Format="DateOnly"
+        Group="_CV"
+    />
+
+    <Field Type="Note"
+        ID="{20918695-dd3c-435e-a5f7-c459a4202655}"
+        Name="CV_FestivalDescription"
+        DisplayName="Description"
+        Required="FALSE"
+        NumLines="6"
+        IsolateStyles="TRUE"
+        StaticName="CV_FestivalDescription"
+        Group="_CV"
+    />
+
+    <Field Type="Thumbnail"
+        ID="{29107248-b00a-4a4b-8144-d503beb5b697}"
+        Name="CV_FestivalImage"
+        DisplayName="Festival Image"
+        Required="TRUE"
+        StaticName="CV_FestivalImage"
+        Group="_CV"
+    />
+
+    <Field Type="URL"
+        ID="{500f1aa3-d039-4c06-986d-1509d27a6166}"
+        Name="CV_FestivalInfoLink"
+        DisplayName="Festival Info Link"
+        Required="False"
+        Format="Hyperlink"
+        StaticName="CV_FestivalInfoLink"
+        Group="_CV"
+    />
+
+    <ContentType ID="0x01002620f6de3ca948b28679918fe3601b4c"
+        Name="CV_HolidayDetails_CT"
+        Group="_CV"
+        Description="Holiday Details Content Type">
+        <FieldRefs>
+            <FieldRef ID="{c6f2163a-f7d5-4574-9836-3a421292293f}" />
+            <FieldRef ID="{6e80def4-250e-4faa-ba84-ba23c4068beb}" />
+            <FieldRef ID="{20918695-dd3c-435e-a5f7-c459a4202655}" />
+            <FieldRef ID="{29107248-b00a-4a4b-8144-d503beb5b697}" />
+            <FieldRef ID="{500f1aa3-d039-4c06-986d-1509d27a6166}" />
+        </FieldRefs>
+    </ContentType>
+
+    <ListInstance
+        CustomSchema="Holiday_Details_Schema.xml"
+        FeatureId="00bfea71-de22-43b2-a848-c05709900100"
+        Title="Holiday Details"
+        Description="This list contains holiday details."
+        TemplateType="100"
+        Url="Lists/CV_HolidayDetails">
+    </ListInstance>
+</Elements>

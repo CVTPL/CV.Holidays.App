@@ -14,3 +14,4 @@ build.rig.getTasks = function () {
 };
 
 build.initialize(require('gulp'));
+build.addSuppression(/Warning/gi);

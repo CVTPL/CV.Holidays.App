@@ -1,0 +1,34 @@
+<List xmlns:ows="Microsoft SharePoint" Title="Holiday Details" EnableContentTypes="TRUE" FolderCreation="FALSE" Direction="$Resources:Direction;" Url="Lists/CV_HolidayDetails" BaseType="0" xmlns="http://schemas.microsoft.com/sharepoint/">
+  <MetaData>
+    <ContentTypes>
+      <ContentTypeRef ID="0x01002620f6de3ca948b28679918fe3601b4c"/>                                
+    </ContentTypes>
+    <Fields></Fields>
+    <Views>
+      <View BaseViewID="1" Type="HTML" WebPartZoneID="Main" DisplayName="$Resources:core,objectiv_schema_mwsidcamlidC24;" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" SetupPath="pages\viewpage.aspx" ImageUrl="/_layouts/images/generic.png" Url="AllItems.aspx">
+        <XslLink Default="TRUE">main.xsl</XslLink>
+        <JSLink>clienttemplates.js</JSLink>
+        <RowLimit Paged="TRUE">100</RowLimit>
+        <Toolbar Type="Standard" />
+        <ViewFields>
+            <FieldRef Name="LinkTitle"></FieldRef>
+            <FieldRef Name="CV_Festival_Name"></FieldRef>
+            <FieldRef Name="CV_Festival_Date"></FieldRef>
+            <FieldRef Name="CV_FestivalDescription"></FieldRef>
+            <FieldRef Name="CV_FestivalImage"></FieldRef>
+            <FieldRef Name="CV_FestivalInfoLink"></FieldRef>
+        </ViewFields>
+        <Query>
+          <OrderBy>
+            <FieldRef Name="ID" />
+          </OrderBy>
+        </Query>
+      </View>
+    </Views>
+    <Forms>
+      <Form Type="DisplayForm" Url="DispForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="EditForm" Url="EditForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="NewForm" Url="NewForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+    </Forms>
+  </MetaData>
+</List>

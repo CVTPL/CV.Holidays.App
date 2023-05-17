@@ -1,0 +1,333 @@
+$white: #ffffff;
+$black: #000000;
+$transparent: transparent;
+
+$primary-1: "[theme:themePrimary, default:#dc1928]";
+$primary-2: #4D4F5C;
+$secondary-1: #dddddd;
+$secondary-2: #9a9a9a;
+$secondary-3: #7f8fa4;
+$scroll-width: 6px;
+$scroll-height: 3px;
+$scroll-thumb-radius: 20px;
+$scroll-thumb-bg: $secondary-2;
+$scroll-thumb-hover-bg: $primary-2;
+$scroll-track-bg: $secondary-1;
+
+
+@mixin scroll-style() {
+  &::-webkit-scrollbar {
+    width: $scroll-width;
+    height: $scroll-height;
+  }
+  &::-webkit-scrollbar-track {
+    background: $scroll-track-bg;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $scroll-thumb-bg;
+    border-radius: $scroll-thumb-radius;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: $scroll-thumb-hover-bg;
+  }
+}
+
+.page-title{
+  text-align: left;
+  margin-top: 0px;
+}
+
+.holiday-card-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0px -10px;
+  box-sizing: border-box;
+  h3 {
+    font-size: 18px;
+    margin: 0px;
+    color: $secondary-3;
+  }
+  .holiday-card-list-item {
+    flex: 0 0 auto;
+    width: 25%;
+    padding: 0px 10px;
+    box-sizing: border-box;
+    margin-bottom: 35px;
+    .cmn-card-shadow-box {
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    }
+    .month-card-list {
+      padding: 0px;
+      margin: 0px;
+      .month-card-list-item {
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 10px;
+        .left-content {
+          width: 80px;
+          flex: 0 0 auto;
+          place-self: flex-start;
+          text-align: center;
+          margin-right: 20px;
+          background-color: $primary-1;
+          color: $white;
+          padding: 6px 0px;
+          border-radius: 6px;
+          span {
+            display: block;
+
+            &:first-child {
+              font-size: 22px;
+            }
+
+            &:last-child {
+              font-size: 16px;
+            }
+          }
+        }
+        .right-content {
+          text-align: left;
+          padding-right: 30px;
+          span{
+            display: block;
+          }
+          .month{
+            font-size: 22px;
+            color: #707070;
+          }
+          .year{
+            font-size: 16px;
+            color: #dddddd;
+          }
+        }
+        
+      }
+      .top-left-center-alignment {
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: #a3b2c7;
+      }
+    }
+    .card-header {
+      .card-image {
+        width: 100%;
+        height: 260px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: top center;
+          transform: scale(1);
+          transition: all .5s ease 0s;
+        }
+      }
+    }
+
+    .content-box {
+      padding: 0px 12px 12px;
+      p {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        margin: 0px;
+        text-align: left;
+        font-size: 16px;
+      }
+    }
+    .holiday-card-list-container {
+      .card-header {
+        position: sticky;
+        top: 0px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 0px;
+        background-color: #ffffff;
+        border-bottom: 1px solid #dddddd;
+        border-radius: 6px;
+        z-index: 9;
+        h2 {
+          margin: 0px;
+          text-align: center;
+        }
+      }
+      .card-body{
+        height: 250px;
+        min-height: 250px;
+        max-height: 250px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        @include scroll-style();
+      }
+    }
+    .holiday-card-view-container{
+      min-height: 450px;
+      .card-header{
+        overflow: hidden;
+        .card-image{
+            position: relative;            
+            &::after{
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: hsla(0,0%,100%,.4);
+            opacity: 0;
+            transition: all .5s ease 0s;
+          img{
+            transform: scale(1);
+            transition: all .5s ease 0s;
+          }
+          }
+        }
+      }
+      &:hover{
+        .card-header{
+          .card-image{
+            &::after{
+              opacity: 1;
+              transition: all .5s ease 0s;
+            }
+            img{
+              transform: scale(1.2);
+              transition: all .5s ease 0s;
+            }
+          }
+        }
+      }      
+    }
+  }
+  .detail-box{
+    position: relative;
+    margin: 8px 0px 12px;
+    h3{
+      padding-right: 30px;
+    }
+    .link-icon {
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      font-size: 20px;
+      color: $primary-1;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+}
+
+/* Switch Button - Relative Code Start */
+.switch-button-container {
+  .ms-ChoiceFieldGroup {
+    text-align: right;
+    margin-bottom: 15px;
+    .ms-ChoiceFieldGroup-flexContainer {
+      display: inline-flex;
+      justify-content: flex-start;
+      border: 1px solid $primary-1;
+      border-radius: 6px;
+      overflow: hidden;
+      .ms-ChoiceField {
+        margin: 0px;
+        min-height: auto;
+        &:first-child {
+          .ms-ChoiceField-wrapper {
+            .ms-ChoiceField-field {
+              border-top-left-radius: 6px;
+              border-bottom-left-radius: 6px;
+            }
+          }
+        }
+        &:last-child {
+          .ms-ChoiceField-wrapper {
+            .ms-ChoiceField-field {
+              border-top-right-radius: 6px;
+              border-bottom-right-radius: 6px;
+            }
+          }
+        }
+        &:not(:last-child) {
+          border-right: 1px solid $primary-1;
+        }
+        .ms-ChoiceField-wrapper {
+          .ms-ChoiceField-field {
+            min-width: auto;
+            text-align: center;
+            padding: 8px 0px;
+            background-color: $white;
+            border: none;
+            // @include media-breakpoint-down(sm) {
+            //   min-width: 140px;
+            //   padding: 8px 8px;
+            // }
+            // @include media-breakpoint-down(xs) {
+            //   min-width: auto;
+            //   padding: 8px 10px;
+            // }
+            &::after,
+            &::before {
+              display: none;
+            }
+            .ms-ChoiceField-innerField{
+              padding: 0px 15px;
+              .ms-ChoiceField-iconWrapper{
+                i{
+                  font-size: 24px;
+                  color: $secondary-3;
+                }
+              }
+            }
+            .ms-ChoiceField-labelWrapper{
+              display: none;
+              .ms-ChoiceFieldLabel {
+                // @include text-style($fs-16, 18px, $font-regular, $primary-2);
+                // font-weight: bold;
+                // padding-left: 0px;
+                // @include media-breakpoint-down(xs) {
+                //   font-size: $fs-14;
+                //   line-height: 16px;
+                // }
+              }
+            }
+            &.is-checked {
+              background-color: $primary-1;
+              .ms-ChoiceFieldLabel {
+                color: $white;
+              }
+              .ms-ChoiceField-innerField{
+                .ms-ChoiceField-iconWrapper{
+                  i{
+                    color: $white;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/* Switch Button - Relative Code End */
+
+.title-with-choicegroup-box{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .page-title{
+    padding-right: 30px;
+  }
+  .switch-button-container{
+    flex: 0 0 auto;
+  }
+}
