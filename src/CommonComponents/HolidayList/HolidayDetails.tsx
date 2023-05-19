@@ -2,7 +2,7 @@ import * as React from 'react';
 import { IHolidayDetailsProps } from './IHolidayDetailsProps';
 import { spfi, SPFx } from "@pnp/sp";
 import PnpSpCommonServices from '../../services/PnpSpCommonServices';
-import { ChoiceGroup, IChoiceGroupOption, FocusZone, List, mergeStyleSets, ITheme, getTheme, IRectangle, TooltipHost, FontIcon } from 'office-ui-fabric-react';
+import { ChoiceGroup, IChoiceGroupOption, FocusZone, List, mergeStyleSets, ITheme, getTheme, IRectangle, TooltipHost, FontIcon, Dropdown, IDropdownOption, DefaultButton } from 'office-ui-fabric-react';
 require("../../assets/stylesheets/base/global.scss");
 
 const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) => {
@@ -10,6 +10,7 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
     const [currentYearHolidays, setCurrentYearHolidays] = React.useState([]);
     const [festivalDetailsListView, setFestivalDetailsListView] = React.useState([]);
     const [selectedView, setSelectedView] = React.useState("list");
+    const [selectedYear, setSelectedYear]: any = React.useState("");
     const [dateFormat, setDateFormat]: any = React.useState({ day: 'numeric', month: 'long', year: 'numeric' });
     // weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
 
@@ -24,31 +25,15 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
         }
     ];
 
+    const dropDownOptions = [
+        { key: '2022', text: '2022' },
+        { key: '2023', text: '2023' }
+    ];
     const theme: ITheme = getTheme();
     const calloutProps = { gapSpace: 0 };
 
     React.useEffect(() => {
-        _getCurrentYearHolidays().then((currentYearHolidayResponse) => {
-            setCurrentYearHolidays(currentYearHolidayResponse);
-            if (currentYearHolidayResponse.length > 0) {
-                //separate all the holidays by month
-                let festivalSeparateMonth: any = [
-                    { January: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 0) },
-                    { February: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 1) },
-                    { March: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 2) },
-                    { April: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 3) },
-                    { May: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 4) },
-                    { June: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 5) },
-                    { July: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 6) },
-                    { August: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 7) },
-                    { September: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 8) },
-                    { October: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 9) },
-                    { November: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 10) },
-                    { December: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 11) }
-                ];
-                setFestivalDetailsListView(festivalSeparateMonth);
-            }
-        });
+        initialFunction(new Date().getFullYear().toString());
     }, []);
 
     return (
@@ -56,12 +41,23 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
             <div className="ms-Grid">
                 <div className="ms-Grid-row">
                     <div className="title-with-choicegroup-box">
-                        <h2 className="page-title">{props.title}</h2>
-                        <ChoiceGroup defaultSelectedKey={selectedView} className="switch-button-container" options={options} onChange={_onChangeChoiceGroup} />
+                        <div className="left-content">
+                            <h2 className="page-title">{props.title}</h2>
+                        </div>
+                        <div className="right-content">
+                            <Dropdown
+                                label="Year"
+                                selectedKey={selectedYear ? selectedYear : undefined}
+                                onChange={(event: React.FormEvent<HTMLDivElement>, item: IDropdownOption) => { setSelectedYear(item.key); initialFunction(item.key); }}
+                                placeholder="Select an option"
+                                options={dropDownOptions}
+                            />
+                            <ChoiceGroup defaultSelectedKey={selectedView} className="switch-button-container" options={options} onChange={_onChangeChoiceGroup} />
+                        </div>
                     </div>
                 </div>
             </div>
-            
+
             {/* DOM for list view */}
             {selectedView == "list" ?
                 <div className="holiday-card-list">
@@ -72,7 +68,7 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
                                     <div className="holiday-card-list-item">
                                         <div className="cmn-card-shadow-box holiday-card-list-container center-content">
                                             <div className="card-header">
-                                                <h2>{Object.keys(ele)[0] + " " + new Date().getFullYear()}</h2>
+                                                <h2>{Object.keys(ele)[0] + " " + selectedYear}</h2>
                                             </div>
                                             <div className="card-body">
                                                 <ul className="month-card-list">
@@ -124,7 +120,7 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
                                     <div className="cmn-card-shadow-box holiday-card-view-container">
                                         <div className="card-header">
                                             <div className="card-image">
-                                                <img src={imageJSON.serverRelativeUrl} alt={festival.CV_Festival_Name} />
+                                                <img src={imageJSON ? imageJSON.serverRelativeUrl : ""} alt={festival.CV_Festival_Name} />
                                             </div>
                                         </div>
                                         <div className="card-body">
@@ -163,10 +159,24 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
                                 </div>
                             );
                         })
-                        : ""}
+                        :
+                        ""}
                 </div>
-                : ""
-            }
+                : ""}
+
+            {/* DOM for data not available */}
+            {(currentYearHolidays && currentYearHolidays.length == 0) && (currentYearHolidays && currentYearHolidays.length == 0) ?
+                <div className="not-found-message-content-box">
+                    <div className="content-box">
+                        <img src={require("../../assets/img/icons/DataNotFound.jpg")} alt="Not available now" />
+                        <h3>No data found!</h3>
+                        <p>You can click on below button to add data.</p>
+                        <div className="btn-container btn-center">
+                            <DefaultButton text='Add data' className="btn-primary-1" onClick={() => { location.href = props.context.pageContext.web.absoluteUrl + "/Lists/CV_HolidayDetails/AllItems.aspx" }} />
+                        </div>
+                    </div>
+                </div>
+                : ""}
         </>
     );
 
@@ -174,13 +184,11 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
      * Function for get current year holidays.
      * @returns 
      */
-    async function _getCurrentYearHolidays(): Promise<any> {
-
-        let currentYear = new Date().getFullYear();
+    async function _getCurrentYearHolidays(year: any): Promise<any> {
 
         let selectString = "Title,CV_Festival_Name,CV_Festival_Date,CV_FestivalDescription,CV_FestivalImage,CV_FestivalInfoLink";
         let expandString = "";
-        let filterString = "(CV_Festival_Date eq '" + currentYear + "-01-01T00:00:00Z' or CV_Festival_Date gt '" + currentYear + "-01-01T00:00:00Z') and (CV_Festival_Date eq '" + currentYear + "-12-31T23:59:59Z' or CV_Festival_Date lt '" + currentYear + "-12-31T23:59:59Z')";
+        let filterString = "(CV_Festival_Date eq '" + year + "-01-01T00:00:00Z' or CV_Festival_Date gt '" + year + "-01-01T00:00:00Z') and (CV_Festival_Date eq '" + year + "-12-31T23:59:59Z' or CV_Festival_Date lt '" + year + "-12-31T23:59:59Z')";
 
         return new Promise((resolve, reject) => {
             PnpSpCommonServices._getListItemsWithExpandStringWithFiltersAndOrderByWithTop(sp, "Holiday Details", selectString, expandString, filterString, "Id", true, 4999).then((response) => {
@@ -199,6 +207,32 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
      */
     function _onChangeChoiceGroup(ev: React.FormEvent<HTMLInputElement>, option: IChoiceGroupOption): void {
         setSelectedView(option.key)
+    }
+
+    function initialFunction(selectedYear: any) {
+        setSelectedYear(selectedYear)
+        _getCurrentYearHolidays(selectedYear).then((currentYearHolidayResponse) => {
+            setCurrentYearHolidays(currentYearHolidayResponse);
+            let festivalSeparateMonth: any = [];
+            if (currentYearHolidayResponse.length > 0) {
+                //separate all the holidays by month
+                festivalSeparateMonth = [
+                    { January: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 0) },
+                    { February: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 1) },
+                    { March: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 2) },
+                    { April: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 3) },
+                    { May: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 4) },
+                    { June: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 5) },
+                    { July: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 6) },
+                    { August: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 7) },
+                    { September: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 8) },
+                    { October: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 9) },
+                    { November: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 10) },
+                    { December: currentYearHolidayResponse.filter((ele: any) => new Date(ele.CV_Festival_Date).getMonth() == 11) }
+                ];
+            }
+            setFestivalDetailsListView(festivalSeparateMonth);
+        });
     }
 };
 

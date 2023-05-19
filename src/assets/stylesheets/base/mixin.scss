@@ -1,0 +1,19 @@
+@mixin scroll-style() {
+    &::-webkit-scrollbar {
+      width: $scroll-width;
+      height: $scroll-height;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background: $scroll-track-bg;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background: $scroll-thumb-bg;
+      border-radius: $scroll-thumb-radius;
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background: $scroll-thumb-hover-bg;
+    }
+  }

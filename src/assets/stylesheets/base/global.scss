@@ -1,38 +1,7 @@
-$white: #ffffff;
-$black: #000000;
-$transparent: transparent;
+@import "../base/variable.scss";
+@import "../base/mixin.scss";
 
-$primary-1: "[theme:themePrimary, default:#dc1928]";
-$primary-2: #4D4F5C;
-$secondary-1: #dddddd;
-$secondary-2: #9a9a9a;
-$secondary-3: #7f8fa4;
-$scroll-width: 6px;
-$scroll-height: 3px;
-$scroll-thumb-radius: 20px;
-$scroll-thumb-bg: $secondary-2;
-$scroll-thumb-hover-bg: $primary-2;
-$scroll-track-bg: $secondary-1;
-
-
-@mixin scroll-style() {
-  &::-webkit-scrollbar {
-    width: $scroll-width;
-    height: $scroll-height;
-  }
-  &::-webkit-scrollbar-track {
-    background: $scroll-track-bg;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: $scroll-thumb-bg;
-    border-radius: $scroll-thumb-radius;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background: $scroll-thumb-hover-bg;
-  }
-}
-
-.page-title{
+.page-title {
   text-align: left;
   margin-top: 0px;
 }
@@ -42,29 +11,35 @@ $scroll-track-bg: $secondary-1;
   flex-wrap: wrap;
   margin: 0px -10px;
   box-sizing: border-box;
+
   h3 {
     font-size: 18px;
     margin: 0px;
     color: $secondary-3;
   }
+
   .holiday-card-list-item {
     flex: 0 0 auto;
     width: 25%;
     padding: 0px 10px;
     box-sizing: border-box;
     margin-bottom: 35px;
+
     .cmn-card-shadow-box {
-      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      box-shadow: $box-shadow-2;
     }
+
     .month-card-list {
       padding: 0px;
       margin: 0px;
+
       .month-card-list-item {
         position: relative;
         display: flex;
         justify-content: flex-start;
         align-items: center;
         padding: 10px;
+
         .left-content {
           width: 80px;
           flex: 0 0 auto;
@@ -75,6 +50,7 @@ $scroll-track-bg: $secondary-1;
           color: $white;
           padding: 6px 0px;
           border-radius: 6px;
+
           span {
             display: block;
 
@@ -87,36 +63,43 @@ $scroll-track-bg: $secondary-1;
             }
           }
         }
+
         .right-content {
           text-align: left;
           padding-right: 30px;
-          span{
+
+          span {
             display: block;
           }
-          .month{
+
+          .month {
             font-size: 22px;
-            color: #707070;
+            color: $secondary-5;
           }
-          .year{
+
+          .year {
             font-size: 16px;
-            color: #dddddd;
+            color: $secondary-1;
           }
         }
-        
+
       }
+
       .top-left-center-alignment {
         height: 250px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 12px;
-        color: #a3b2c7;
+        color: $secondary-4;
       }
     }
+
     .card-header {
       .card-image {
         width: 100%;
         height: 260px;
+
         img {
           width: 100%;
           height: 100%;
@@ -130,6 +113,7 @@ $scroll-track-bg: $secondary-1;
 
     .content-box {
       padding: 0px 12px 12px;
+
       p {
         display: -webkit-box;
         -webkit-box-orient: vertical;
@@ -140,6 +124,7 @@ $scroll-track-bg: $secondary-1;
         font-size: 16px;
       }
     }
+
     .holiday-card-list-container {
       .card-header {
         position: sticky;
@@ -149,16 +134,18 @@ $scroll-track-bg: $secondary-1;
         align-items: center;
         justify-content: center;
         padding: 10px 0px;
-        background-color: #ffffff;
-        border-bottom: 1px solid #dddddd;
+        background-color: $white;
+        border-bottom: 1px solid $secondary-1;
         border-radius: 6px;
         z-index: 9;
+
         h2 {
           margin: 0px;
           text-align: center;
         }
       }
-      .card-body{
+
+      .card-body {
         height: 250px;
         min-height: 250px;
         max-height: 250px;
@@ -167,51 +154,61 @@ $scroll-track-bg: $secondary-1;
         @include scroll-style();
       }
     }
-    .holiday-card-view-container{
+
+    .holiday-card-view-container {
       min-height: 450px;
-      .card-header{
+
+      .card-header {
         overflow: hidden;
-        .card-image{
-            position: relative;            
-            &::after{
+
+        .card-image {
+          position: relative;
+
+          &::after {
             position: absolute;
             content: "";
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: hsla(0,0%,100%,.4);
+            background-color: hsla(0, 0%, 100%, .4);
             opacity: 0;
             transition: all .5s ease 0s;
-          img{
-            transform: scale(1);
-            transition: all .5s ease 0s;
-          }
+
+            img {
+              transform: scale(1);
+              transition: all .5s ease 0s;
+            }
           }
         }
       }
-      &:hover{
-        .card-header{
-          .card-image{
-            &::after{
+
+      &:hover {
+        .card-header {
+          .card-image {
+            &::after {
               opacity: 1;
               transition: all .5s ease 0s;
             }
-            img{
+
+            img {
               transform: scale(1.2);
               transition: all .5s ease 0s;
             }
           }
         }
-      }      
+      }
     }
   }
-  .detail-box{
+
+  .detail-box {
     position: relative;
     margin: 8px 0px 12px;
-    h3{
+
+    h3 {
       padding-right: 30px;
     }
+
     .link-icon {
       position: absolute;
       right: 4px;
@@ -231,15 +228,18 @@ $scroll-track-bg: $secondary-1;
   .ms-ChoiceFieldGroup {
     text-align: right;
     margin-bottom: 15px;
+
     .ms-ChoiceFieldGroup-flexContainer {
       display: inline-flex;
       justify-content: flex-start;
       border: 1px solid $primary-1;
       border-radius: 6px;
       overflow: hidden;
+
       .ms-ChoiceField {
         margin: 0px;
         min-height: auto;
+
         &:first-child {
           .ms-ChoiceField-wrapper {
             .ms-ChoiceField-field {
@@ -248,6 +248,7 @@ $scroll-track-bg: $secondary-1;
             }
           }
         }
+
         &:last-child {
           .ms-ChoiceField-wrapper {
             .ms-ChoiceField-field {
@@ -256,9 +257,11 @@ $scroll-track-bg: $secondary-1;
             }
           }
         }
+
         &:not(:last-child) {
           border-right: 1px solid $primary-1;
         }
+
         .ms-ChoiceField-wrapper {
           .ms-ChoiceField-field {
             min-width: auto;
@@ -266,6 +269,7 @@ $scroll-track-bg: $secondary-1;
             padding: 8px 0px;
             background-color: $white;
             border: none;
+
             // @include media-breakpoint-down(sm) {
             //   min-width: 140px;
             //   padding: 8px 8px;
@@ -278,17 +282,21 @@ $scroll-track-bg: $secondary-1;
             &::before {
               display: none;
             }
-            .ms-ChoiceField-innerField{
+
+            .ms-ChoiceField-innerField {
               padding: 0px 15px;
-              .ms-ChoiceField-iconWrapper{
-                i{
+
+              .ms-ChoiceField-iconWrapper {
+                i {
                   font-size: 24px;
                   color: $secondary-3;
                 }
               }
             }
-            .ms-ChoiceField-labelWrapper{
+
+            .ms-ChoiceField-labelWrapper {
               display: none;
+
               .ms-ChoiceFieldLabel {
                 // @include text-style($fs-16, 18px, $font-regular, $primary-2);
                 // font-weight: bold;
@@ -299,14 +307,17 @@ $scroll-track-bg: $secondary-1;
                 // }
               }
             }
+
             &.is-checked {
               background-color: $primary-1;
+
               .ms-ChoiceFieldLabel {
                 color: $white;
               }
-              .ms-ChoiceField-innerField{
-                .ms-ChoiceField-iconWrapper{
-                  i{
+
+              .ms-ChoiceField-innerField {
+                .ms-ChoiceField-iconWrapper {
+                  i {
                     color: $white;
                   }
                 }
@@ -318,16 +329,150 @@ $scroll-track-bg: $secondary-1;
     }
   }
 }
+
 /* Switch Button - Relative Code End */
 
-.title-with-choicegroup-box{
+.title-with-choicegroup-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .page-title{
+
+  .page-title {
     padding-right: 30px;
   }
-  .switch-button-container{
+
+  .switch-button-container {
     flex: 0 0 auto;
+  }
+
+  .right-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .ms-Dropdown-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-right: 10px;
+      margin-bottom: 15px;
+
+      .ms-Dropdown {
+        .ms-Dropdown-title {
+          height: 50px;
+          display: flex;
+          align-items: center;
+          font-size: 18px;
+          border-radius: 6px;
+        }
+      }
+
+      .ms-Label {
+        display: block;
+        font-size: 20px;
+        line-height: 22px;
+        color: $primary-2;
+        font-weight: 600;
+        margin-right: 12px;
+      }
+    }
+  }
+}
+
+.ms-Dropdown-container {
+  .ms-Dropdown {
+    .ms-Dropdown-caretDownWrapper {
+      top: 50%;
+      transform: translateY(-50%);
+      height: auto;
+      line-height: normal;
+    }
+  }
+}
+
+.ms-Layer {
+  .ms-Layer-content {
+    .ms-Callout-container {
+      .ms-Dropdown-callout {
+        .ms-Callout-main {
+          >div {
+            .ms-Dropdown-items {
+              .ms-Dropdown-item {
+                &.ms-Button {
+                  height: auto;
+                  min-height: auto;
+                  padding: 8px 8px;
+
+                  .ms-Button-flexContainer {
+                    .ms-Dropdown-optionText {
+                      font-size: 18px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.not-found-message-content-box {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  background: $white;
+  border-radius: 10px;
+  padding: 30px 60px;
+  margin: 50px auto 50px;
+  box-shadow: $box-shadow-2;
+  .content-box{
+    text-align: center;
+  > h3{
+    font-size: 28px;
+    margin: 0px;
+    color: $primary-1;
+  }
+  > p{
+    font-size: 20px;
+    margin: 20px 0px;
+  }
+  img{
+    width: 500px;
+  }
+  .btn-container{
+    .ms-Button--default{
+      &.ms-Button{
+        &.btn-primary-1{
+          min-width: 120px;
+        }
+      }
+    }
+  }
+}
+}
+
+.btn-container{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  &.btn-center{
+    justify-content: center;
+  }
+  &.btn-end{
+    justify-content: flex-end;
+  }
+  .ms-Button--default{
+    &.ms-Button{
+      &.btn-primary-1{
+        height: 40px;
+        font-size: $fs-16;
+        background-color: $primary-1;
+        border: 1px solid $primary-1;
+        color: $white;
+        border-radius: 4px;
+      }
+    }
   }
 }
