@@ -6,4 +6,5 @@ export interface IHolidayListProps {
   hasTeamsContext: boolean;
   userDisplayName: string;
   context: any;
+  dataSource: string;
 }

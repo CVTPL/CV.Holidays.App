@@ -5,7 +5,8 @@ import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField,
   PropertyPaneLink,
-  PropertyPaneLabel
+  PropertyPaneLabel,
+  PropertyPaneDropdown
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
@@ -17,6 +18,7 @@ import { IHolidayListProps } from './components/IHolidayListProps';
 export interface IHolidayListWebPartProps {
   description: string;
   webpartTitle: string;
+  dataSource: string;
 }
 
 export default class HolidayListWebPart extends BaseClientSideWebPart<IHolidayListWebPartProps> {
@@ -34,7 +36,8 @@ export default class HolidayListWebPart extends BaseClientSideWebPart<IHolidayLi
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
         context: this.context,
-        webpartTitle: this.properties.webpartTitle
+        webpartTitle: this.properties.webpartTitle,
+        dataSource: this.properties.dataSource
       }
     );
 
@@ -97,7 +100,7 @@ export default class HolidayListWebPart extends BaseClientSideWebPart<IHolidayLi
                 PropertyPaneLabel('label',
                   { text: 'Click on Go to List for add Holiday Details.' }),
                 PropertyPaneLink('URL',
-                  { text: 'Go to List', href: this.context.pageContext.web.absoluteUrl+"/Lists/CV_HolidayDetails/AllItems.aspx", target: '_blank' })
+                  { text: 'Go to List', href: this.context.pageContext.web.absoluteUrl + "/Lists/CV_HolidayDetails/AllItems.aspx", target: '_blank' })
               ]
             }
           ]

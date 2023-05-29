@@ -5,41 +5,46 @@
   text-align: left;
   margin-top: 0px;
 }
-
 .holiday-card-list {
   display: flex;
   flex-wrap: wrap;
   margin: 0px -10px;
   box-sizing: border-box;
-
   h3 {
     font-size: 18px;
     margin: 0px;
     color: $secondary-3;
+    @include media-breakpoint-down(xxl){
+      font-size: 16px;
+    }
   }
-
   .holiday-card-list-item {
     flex: 0 0 auto;
     width: 25%;
     padding: 0px 10px;
     box-sizing: border-box;
-    margin-bottom: 35px;
-
+    margin-bottom: 20px;
+    @include media-breakpoint-down(xl){
+      width: 33.33%;
+    }
+    @include media-breakpoint-down(lg){
+      width: 50%;
+    }
+    @include media-breakpoint-down(sm){
+      width: 100%;
+    }
     .cmn-card-shadow-box {
       box-shadow: $box-shadow-2;
     }
-
     .month-card-list {
       padding: 0px;
       margin: 0px;
-
       .month-card-list-item {
         position: relative;
         display: flex;
         justify-content: flex-start;
         align-items: center;
         padding: 10px;
-
         .left-content {
           width: 80px;
           flex: 0 0 auto;
@@ -50,41 +55,32 @@
           color: $white;
           padding: 6px 0px;
           border-radius: 6px;
-
           span {
             display: block;
-
             &:first-child {
               font-size: 22px;
             }
-
             &:last-child {
               font-size: 16px;
             }
           }
         }
-
         .right-content {
           text-align: left;
           padding-right: 30px;
-
           span {
             display: block;
           }
-
           .month {
             font-size: 22px;
             color: $secondary-5;
           }
-
           .year {
             font-size: 16px;
             color: $secondary-1;
           }
         }
-
       }
-
       .top-left-center-alignment {
         height: 250px;
         display: flex;
@@ -94,12 +90,10 @@
         color: $secondary-4;
       }
     }
-
     .card-header {
       .card-image {
         width: 100%;
         height: 260px;
-
         img {
           width: 100%;
           height: 100%;
@@ -110,10 +104,8 @@
         }
       }
     }
-
     .content-box {
       padding: 0px 12px 12px;
-
       p {
         display: -webkit-box;
         -webkit-box-orient: vertical;
@@ -124,7 +116,6 @@
         font-size: 16px;
       }
     }
-
     .holiday-card-list-container {
       .card-header {
         position: sticky;
@@ -138,13 +129,15 @@
         border-bottom: 1px solid $secondary-1;
         border-radius: 6px;
         z-index: 9;
-
         h2 {
+          font-size: 22px;
           margin: 0px;
           text-align: center;
+          @include media-breakpoint-down(xxl){
+            font-size: 20px;
+          }
         }
       }
-
       .card-body {
         height: 250px;
         min-height: 250px;
@@ -154,16 +147,12 @@
         @include scroll-style();
       }
     }
-
     .holiday-card-view-container {
       min-height: 450px;
-
       .card-header {
         overflow: hidden;
-
         .card-image {
           position: relative;
-
           &::after {
             position: absolute;
             content: "";
@@ -174,7 +163,6 @@
             background-color: hsla(0, 0%, 100%, .4);
             opacity: 0;
             transition: all .5s ease 0s;
-
             img {
               transform: scale(1);
               transition: all .5s ease 0s;
@@ -182,7 +170,6 @@
           }
         }
       }
-
       &:hover {
         .card-header {
           .card-image {
@@ -190,7 +177,6 @@
               opacity: 1;
               transition: all .5s ease 0s;
             }
-
             img {
               transform: scale(1.2);
               transition: all .5s ease 0s;
@@ -200,15 +186,12 @@
       }
     }
   }
-
   .detail-box {
     position: relative;
     margin: 8px 0px 12px;
-
     h3 {
       padding-right: 30px;
     }
-
     .link-icon {
       position: absolute;
       right: 4px;
@@ -228,18 +211,15 @@
   .ms-ChoiceFieldGroup {
     text-align: right;
     margin-bottom: 15px;
-
     .ms-ChoiceFieldGroup-flexContainer {
       display: inline-flex;
       justify-content: flex-start;
       border: 1px solid $primary-1;
       border-radius: 6px;
       overflow: hidden;
-
       .ms-ChoiceField {
         margin: 0px;
         min-height: auto;
-
         &:first-child {
           .ms-ChoiceField-wrapper {
             .ms-ChoiceField-field {
@@ -248,7 +228,6 @@
             }
           }
         }
-
         &:last-child {
           .ms-ChoiceField-wrapper {
             .ms-ChoiceField-field {
@@ -257,11 +236,9 @@
             }
           }
         }
-
         &:not(:last-child) {
           border-right: 1px solid $primary-1;
         }
-
         .ms-ChoiceField-wrapper {
           .ms-ChoiceField-field {
             min-width: auto;
@@ -269,23 +246,11 @@
             padding: 8px 0px;
             background-color: $white;
             border: none;
-
-            // @include media-breakpoint-down(sm) {
-            //   min-width: 140px;
-            //   padding: 8px 8px;
-            // }
-            // @include media-breakpoint-down(xs) {
-            //   min-width: auto;
-            //   padding: 8px 10px;
-            // }
-            &::after,
-            &::before {
+            &::after, &::before {
               display: none;
             }
-
             .ms-ChoiceField-innerField {
               padding: 0px 15px;
-
               .ms-ChoiceField-iconWrapper {
                 i {
                   font-size: 24px;
@@ -293,28 +258,14 @@
                 }
               }
             }
-
             .ms-ChoiceField-labelWrapper {
               display: none;
-
-              .ms-ChoiceFieldLabel {
-                // @include text-style($fs-16, 18px, $font-regular, $primary-2);
-                // font-weight: bold;
-                // padding-left: 0px;
-                // @include media-breakpoint-down(xs) {
-                //   font-size: $fs-14;
-                //   line-height: 16px;
-                // }
-              }
             }
-
             &.is-checked {
               background-color: $primary-1;
-
               .ms-ChoiceFieldLabel {
                 color: $white;
               }
-
               .ms-ChoiceField-innerField {
                 .ms-ChoiceField-iconWrapper {
                   i {
@@ -329,34 +280,29 @@
     }
   }
 }
-
 /* Switch Button - Relative Code End */
 
 .title-with-choicegroup-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  flex-wrap: wrap;
   .page-title {
     padding-right: 30px;
   }
-
   .switch-button-container {
     flex: 0 0 auto;
   }
-
   .right-content {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-
     .ms-Dropdown-container {
       display: flex;
       align-items: center;
       justify-content: flex-start;
       margin-right: 10px;
       margin-bottom: 15px;
-
       .ms-Dropdown {
         .ms-Dropdown-title {
           height: 50px;
@@ -366,7 +312,6 @@
           border-radius: 6px;
         }
       }
-
       .ms-Label {
         display: block;
         font-size: 20px;
@@ -402,7 +347,6 @@
                   height: auto;
                   min-height: auto;
                   padding: 8px 8px;
-
                   .ms-Button-flexContainer {
                     .ms-Dropdown-optionText {
                       font-size: 18px;
@@ -429,28 +373,28 @@
   box-shadow: $box-shadow-2;
   .content-box{
     text-align: center;
-  > h3{
-    font-size: 28px;
-    margin: 0px;
-    color: $primary-1;
-  }
-  > p{
-    font-size: 20px;
-    margin: 20px 0px;
-  }
-  img{
-    width: 500px;
-  }
-  .btn-container{
-    .ms-Button--default{
-      &.ms-Button{
-        &.btn-primary-1{
-          min-width: 120px;
+    > h3{
+      font-size: 28px;
+      margin: 0px;
+      color: $primary-1;
+    }
+    > p{
+      font-size: 20px;
+      margin: 20px 0px;
+    }
+    img{
+      width: 500px;
+    }
+    .btn-container{
+      .ms-Button--default{
+        &.ms-Button{
+          &.btn-primary-1{
+            min-width: 120px;
+          }
         }
       }
     }
   }
-}
 }
 
 .btn-container{
@@ -476,3 +420,154 @@
     }
   }
 }
+
+// Sharepoint Select Column Card issue SCSS Customize Start
+.CanvasZoneContainer{
+  .CanvasZone{
+    .CanvasSection{
+      &.CanvasSection-xl6{
+        .ControlZone{
+          .ControlZone--position{
+            .ControlZone-control{
+              > div {
+                .ms-SPLegacyFabricBlock{
+                  .holiday-card-list{
+                    height: 720px;
+                    overflow-y: auto;
+                    @include scroll-style();
+                    .holiday-card-list-item{
+                      width: 50%;
+                      @include media-breakpoint-down(lg){
+                        width: 100%;
+                      }
+                      @include media-breakpoint-down(ipad){
+                        width: 50%;
+                      }
+                      @include media-breakpoint-down(sm){
+                        width: 100%;
+                      }
+                      .holiday-card-list-container{
+                        .card-header{
+                          h2{
+                            @include media-breakpoint-down(xl){
+                              font-size: 18px;
+                            }
+                          }
+                        }
+                        .card-body{
+                          .month-card-list{
+                            .month-card-list-item{
+                              .left-content{
+                                span{
+                                  &:first-child{
+                                    @include media-breakpoint-down(xl){
+                                      font-size: 20px;
+                                    }
+                                  }
+                                  &:last-child{
+                                    @include media-breakpoint-down(xl){
+                                      font-size: 14px;
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      &.CanvasSection-xl4{
+        .ControlZone{
+          .ControlZone--position{
+            .ControlZone-control{
+              > div {
+                .ms-SPLegacyFabricBlock{
+                  .holiday-card-list{
+                    height: 720px;
+                    overflow-y: auto;
+                    @include scroll-style();
+                    .title-with-choicegroup-box{
+                      .left-content{
+                        .page-title{
+                          @include media-breakpoint-down(xxl){
+                            font-size: 18px;
+                          }
+                        }
+                      }
+                      .right-content{
+                        .ms-Dropdown-container{
+                          @include media-breakpoint-down(lg){
+                            width: 100%;
+                          }
+                          .ms-Label{
+                            @include media-breakpoint-down(xxl){
+                              font-size: 16px;
+                            }
+                          }
+                        }
+                        .switch-button-container{
+                          .ms-ChoiceFieldGroup{
+                            .ms-ChoiceFieldGroup-flexContainer{
+                              .ms-ChoiceField{
+                                .ms-ChoiceField-wrapper{
+                                  .ms-ChoiceField-field{
+                                    .ms-ChoiceField-innerField{
+                                      @include media-breakpoint-down(lg){
+                                        padding: 0px 12px;
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    .holiday-card-list-item{
+                      width: 100%;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      &.CanvasSection-xl8{
+        .ControlZone{
+          .ControlZone--position{
+            .ControlZone-control{
+              > div {
+                .ms-SPLegacyFabricBlock{
+                  .holiday-card-list{
+                    height: 720px;
+                    overflow-y: auto;
+                    @include scroll-style();
+                    .holiday-card-list-item{
+                      width: 33.33%;
+                      @include media-breakpoint-down(xl){
+                        width: 50%;
+                      }
+                      @include media-breakpoint-down(lg){
+                        width: 100%;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+// Sharepoint Select Column Card issue SCSS Customize End

@@ -1,19 +1,25 @@
 @mixin scroll-style() {
-    &::-webkit-scrollbar {
-      width: $scroll-width;
-      height: $scroll-height;
-    }
-  
-    &::-webkit-scrollbar-track {
-      background: $scroll-track-bg;
-    }
-  
-    &::-webkit-scrollbar-thumb {
-      background: $scroll-thumb-bg;
-      border-radius: $scroll-thumb-radius;
-    }
-  
-    &::-webkit-scrollbar-thumb:hover {
-      background: $scroll-thumb-hover-bg;
-    }
+  &::-webkit-scrollbar {
+    width: $scroll-width;
+    height: $scroll-height;
+  }  
+  &::-webkit-scrollbar-track {
+    background: $scroll-track-bg;
+  }  
+  &::-webkit-scrollbar-thumb {
+    background: $scroll-thumb-bg;
+    border-radius: $scroll-thumb-radius;
+  }  
+  &::-webkit-scrollbar-thumb:hover {
+    background: $scroll-thumb-hover-bg;
   }
+}
+
+/* Responsive - Mixin Start */
+@mixin media-breakpoint-down($breakpoint) {
+  $breakpoint-value: map-get($breakpoints, $breakpoint);
+  @media (max-width: $breakpoint-value) {
+    @content;
+  }
+}
+/* Responsive - Mixin End */

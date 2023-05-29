@@ -170,17 +170,6 @@ const PnpSpCommonServices = {
         return res;
     },
     _addImage: async (sp: any, folderPath: string, file: any) => {
-        // const [batchedSP, execute] = sp.batched();
-        // // const folder = batchedSP.web.getFolderByServerRelativePath(folderPath);
-        // let res: any = [];
-
-        // files.forEach((fileItems: any) => {
-        //     // folder.files.addUsingPath(fileItems.fileName, fileItems.fileContent, { Overwrite: true }).then((r: any) => res.push(r));
-        //     batchedSP.web.getFolderByServerRelativePath(folderPath).files.addUsingPath(files.fileName, files.fileContent, { Overwrite: true }).then((r: any) => res.push(r));
-        // });
-        // await execute();
-        // return res;
-
         return await sp.web.getFolderByServerRelativePath(folderPath).files.addUsingPath(file.fileName, file.fileContent, { Overwrite: true });
     }
 }

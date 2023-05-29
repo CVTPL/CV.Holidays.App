@@ -2,18 +2,19 @@ import * as React from 'react';
 import { IHolidayDetailsProps } from './IHolidayDetailsProps';
 import { spfi, SPFx } from "@pnp/sp";
 import PnpSpCommonServices from '../../services/PnpSpCommonServices';
-import { ChoiceGroup, IChoiceGroupOption, FocusZone, List, mergeStyleSets, ITheme, getTheme, IRectangle, TooltipHost, FontIcon, Dropdown, IDropdownOption, DefaultButton } from 'office-ui-fabric-react';
+import { ChoiceGroup, IChoiceGroupOption, FocusZone, List, mergeStyleSets, ITheme, getTheme, IRectangle, TooltipHost, FontIcon, Dropdown, IDropdownOption, DefaultButton, initializeIcons } from 'office-ui-fabric-react';
 require("../../assets/stylesheets/base/global.scss");
 
 const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) => {
     const sp = spfi().using(SPFx(props.context));
     const [currentYearHolidays, setCurrentYearHolidays] = React.useState([]);
     const [festivalDetailsListView, setFestivalDetailsListView] = React.useState([]);
+    const [dropDownOptions, setDropDownOptions] = React.useState([]);
     const [selectedView, setSelectedView] = React.useState("list");
     const [selectedYear, setSelectedYear]: any = React.useState("");
     const [dateFormat, setDateFormat]: any = React.useState({ day: 'numeric', month: 'long', year: 'numeric' });
     // weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-
+    
     const options: any[] = [
         {
             key: 'list',
@@ -25,15 +26,27 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
         }
     ];
 
-    const dropDownOptions = [
-        { key: '2022', text: '2022' },
-        { key: '2023', text: '2023' }
-    ];
     const theme: ITheme = getTheme();
     const calloutProps = { gapSpace: 0 };
 
     React.useEffect(() => {
-        initialFunction(new Date().getFullYear().toString());
+        _getHolidaysYears().then((response) => {
+            if (response && response.length > 0) {
+                let years: any = [];
+                let tempDropDownOptions: any = [];
+
+                response.forEach((holiday: any) => {
+                    if (!years.includes(new Date(holiday.CV_Festival_Date).getFullYear().toString())) {
+                        years.push(new Date(holiday.CV_Festival_Date).getFullYear().toString());
+                    }
+                });
+                years.forEach((year: any) => {
+                    tempDropDownOptions.push({ key: year, text: year });
+                });
+                setDropDownOptions(tempDropDownOptions);
+            }
+            initialFunction(new Date().getFullYear().toString());
+        });
     }, []);
 
     return (
@@ -180,6 +193,17 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
         </>
     );
 
+    async function _getHolidaysYears(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            PnpSpCommonServices._getListItemsWithExpandStringWithFiltersAndOrderByWithTop(sp, "Holiday Details", "CV_Festival_Date", "", "", "Id", false, 4999).then((response) => {
+                resolve(response);
+            },
+                (error: any): any => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    }
     /**
      * Function for get current year holidays.
      * @returns 

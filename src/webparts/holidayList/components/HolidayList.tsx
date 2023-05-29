@@ -4,7 +4,7 @@ import { IHolidayListProps } from './IHolidayListProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 import HolidayDetails from '../../../CommonComponents/HolidayList/HolidayDetails';
 import { Placeholder } from "@pnp/spfx-controls-react/lib/Placeholder";
-import { getTheme } from 'office-ui-fabric-react';
+import { getTheme, initializeIcons } from 'office-ui-fabric-react';
 import PnpSpCommonServices from '../../../services/PnpSpCommonServices';
 import { spfi, SPFx } from "@pnp/sp";
 import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
@@ -19,13 +19,18 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
       loading: true,
       placeholderDisplay: false
     };
-
+    initializeIcons(undefined, { disableWarnings: true });
   }
   public sp = spfi().using(SPFx(this.props.context));
   componentDidMount(): void {
 
     //check list is exist or not
     if (Object.keys(this.props.context).length > 0) {
+      console.log(this.props.context.domElement.clientWidth);
+      
+      // let siteUrl = this.props.dataSource && this.props.dataSource == "SiteLevel" ? this.props.context.pageContext.legacyPageContext.webAbsoluteUrl : this.props.context.pageContext.legacyPageContext.appBarParams.portalUrl;
+      let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
+
       PnpSpCommonServices._getSiteListByName(this.props.context, "Holiday Details").then((response) => {
         if (response.status == 404) {//list is not available
 
@@ -34,7 +39,7 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
             let checkSiteDesign = allSiteDesign.filter((ele: any) => ele.Title == "HolidayDetailsSiteDesign");
             if (checkSiteDesign.length > 0) {
               //site design is available so apply that site design to site.
-              return PnpSpCommonServices._applySiteDesignToSite(this.sp, checkSiteDesign[0].Id, this.props.context.pageContext.legacyPageContext.webAbsoluteUrl).then((response) => {
+              return PnpSpCommonServices._applySiteDesignToSite(this.sp, checkSiteDesign[0].Id, siteUrl).then((response) => {
                 return this._commonFlowAfterSideDesignApply();
               }).then((response) => {
                 console.log("Done");
@@ -47,7 +52,7 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
                 if (checkSiteScript.length > 0) {
                   //site script is available so create site design and apply to site
                   return PnpSpCommonServices._createSiteDesign(this.sp, checkSiteScript[0].Id).then((response) => {
-                    return PnpSpCommonServices._applySiteDesignToSite(this.sp, response.Id, this.props.context.pageContext.legacyPageContext.webAbsoluteUrl);
+                    return PnpSpCommonServices._applySiteDesignToSite(this.sp, response.Id, siteUrl);
                   }).then((response) => {
                     return this._commonFlowAfterSideDesignApply();
                   });
@@ -57,7 +62,7 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
                   PnpSpCommonServices._createSiteScript(this.props.context, this.sp).then((response) => {
                     return PnpSpCommonServices._createSiteDesign(this.sp, response.Id);
                   }).then((response) => {
-                    return PnpSpCommonServices._applySiteDesignToSite(this.sp, response.Id, this.props.context.pageContext.legacyPageContext.webAbsoluteUrl);
+                    return PnpSpCommonServices._applySiteDesignToSite(this.sp, response.Id, siteUrl);
                   }).then((response) => {
                     return this._commonFlowAfterSideDesignApply();
                   });
@@ -67,7 +72,9 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
           });
         }
         else {
+          // return this._checkDefaultData();
           return this._getCurrentYearHolidays();
+          // return this._commonFlowAfterSideDesignApply();
         }
       });
     }
@@ -129,7 +136,19 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
       });
     });
   }
-
+  private async _checkDefaultData(): Promise<any> {
+    let currentYear = new Date().getFullYear();
+    let filterString = "CV_Festival_Name eq 'New Year's Day' and CV_Festival_Date eq " + new Date("" + currentYear + "-01-01T00:00:00Z") + "";
+    return new Promise((resolve, reject) => {
+      PnpSpCommonServices._getListItemsWithExpandStringWithFiltersAndOrderByWithTop(this.sp, "Holiday Details", "*", "", "filter", "Id", false, 4999).then((response) => {
+        resolve(response);
+      },
+        (error: any) => {
+          reject(error);
+          console.log(error);
+        });
+    });
+  }
   private async _addDefaultItemsInList(items: any): Promise<any> {
     return new Promise((resolve, reject) => {
       PnpSpCommonServices._addItemsUsingBatch(this.sp, "Holiday Details", items).then((response) => {
@@ -178,6 +197,7 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
   }
 
   private _commonFlowAfterSideDesignApply = async () => {
+    let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
     let listId = "";
     PnpSpCommonServices._getFolderByPath(this.props.context, "SiteAssets/Lists")
       .then((response) => {
@@ -186,7 +206,7 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
           return;
         }
         else {
-          return PnpSpCommonServices._createFolder(this.sp, this.props.context.pageContext.web.serverRelativeUrl + "/SiteAssets/Lists");
+          return PnpSpCommonServices._createFolder(this.sp, siteUrl + "/SiteAssets/Lists");
         }
       }).then((response) => {
         //get list object for get ID
@@ -196,12 +216,12 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
       }).then((response) => {
         listId = response.d.Id;
         //create folder using list ID
-        return PnpSpCommonServices._createFolder(this.sp, "" + this.props.context.pageContext.web.serverRelativeUrl + "/SiteAssets/Lists/" + listId + "");
+        return PnpSpCommonServices._createFolder(this.sp, "" + siteUrl + "/SiteAssets/Lists/" + listId + "");
       }).then(async (response) => {
         return this._setupImageObject();
       }).then(async (response) => {
         response.forEach(async image => {
-          await PnpSpCommonServices._addImage(this.sp, this.props.context.pageContext.web.serverRelativeUrl + "/SiteAssets/Lists/" + listId + "", image);
+          await PnpSpCommonServices._addImage(this.sp, siteUrl + "/SiteAssets/Lists/" + listId + "", image);
         });
       }).then((response) => {
         let currentYear = new Date().getFullYear();
@@ -217,7 +237,7 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
             },
             CV_FestivalImage: JSON.stringify({
               type: 'thumbnail',
-              serverRelativeUrl: this.props.context.pageContext.web.serverRelativeUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
+              serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
             })
           },
           {
@@ -231,7 +251,7 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
             },
             CV_FestivalImage: JSON.stringify({
               type: 'thumbnail',
-              serverRelativeUrl: this.props.context.pageContext.web.serverRelativeUrl + '/SiteAssets/Lists/' + listId + "/US-Independence-Day.jpg"
+              serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/US-Independence-Day.jpg"
             })
           },
           {
@@ -245,7 +265,7 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
             },
             CV_FestivalImage: JSON.stringify({
               type: 'thumbnail',
-              serverRelativeUrl: this.props.context.pageContext.web.serverRelativeUrl + '/SiteAssets/Lists/' + listId + "/INDIA-Independence-Day.jpg"
+              serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/INDIA-Independence-Day.jpg"
             })
           },
           {
@@ -259,7 +279,7 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
             },
             CV_FestivalImage: JSON.stringify({
               type: 'thumbnail',
-              serverRelativeUrl: this.props.context.pageContext.web.serverRelativeUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
+              serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
             })
           }
         ];
