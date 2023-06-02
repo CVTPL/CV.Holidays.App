@@ -1,0 +1,67 @@
+/* *************************************************** Color Relative Declare Variables Style CSS Start *************************************************** */
+$white: #ffffff;
+$black: #000000;
+$transparent: transparent;
+
+$primary-1: "[theme:themePrimary, default:#dc1928]";
+$primary-2: #4D4F5C;
+$primary-3: #D1373D;
+
+$secondary-1: #dddddd;
+$secondary-2: #9a9a9a;
+$secondary-3: #7f8fa4;
+$secondary-4: #a3b2c7;
+$secondary-5: #707070;
+/* *************************************************** Color Relative Declare Variables Style CSS End *************************************************** */
+
+/* *************************************************** Selection Relative Declare Variables Style CSS Start *************************************************** */
+$selection-background-color: $primary-1;
+$selection-color: $white;
+/* *************************************************** Selection Relative Declare Variables Style CSS End *************************************************** */
+
+/* *************************************************** Box Shadow Declare Variables Style CSS Start *************************************************** */
+$box-shadow-1: 0px 10px 30px rgb($black, 0.08);
+$box-shadow-2: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+/* *************************************************** Box Shadow Declare Variables Style CSS End *************************************************** */
+
+/* *************************************************** Scroll Bar Relative Declare Variables Style CSS Start *************************************************** */
+$scroll-width: 6px;
+$scroll-height: 3px;
+$scroll-thumb-radius: 20px;
+$scroll-thumb-bg: $secondary-2;
+$scroll-thumb-hover-bg: $primary-2;
+$scroll-track-bg: $secondary-1;
+/* *************************************************** Scroll Bar Relative Declare Variables Style CSS End *************************************************** */
+
+$font-regular: 'Segoe UI Web (Arabic)';
+
+/* *************************************************** Font Size Relative Declare Variables Style CSS Start *************************************************** */
+$fs-10: 10px;
+$fs-12: 12px;
+$fs-14: 14px;
+$fs-15: 15px;
+$fs-16: 16px;
+$fs-18: 18px;
+$fs-20: 20px;
+$fs-22: 22px;
+$fs-24: 24px;
+$fs-26: 26px;
+$fs-28: 28px;
+$fs-36: 36px;
+$fs-40: 40px;
+/* *************************************************** Font Size Relative Declare Variables Style CSS End *************************************************** */
+
+/* *************************************************** Responsive Breapoints Relative Declare Variables Style CSS Start *************************************************** */
+$breakpoints: (
+  xxxs: 360px,
+  mxs: 375px,
+  xxs: 420px,
+  xs: 575px,
+  sm: 768px,
+  md: 991px,
+  ipad: 1023px,
+  lg: 1199px,
+  xl: 1400px,
+  xxl: 1600px,
+);
+/* *************************************************** Responsive Breapoints Relative Declare Variables Style CSS End *************************************************** */

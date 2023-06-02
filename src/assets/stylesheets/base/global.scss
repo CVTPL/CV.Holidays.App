@@ -1,42 +1,10 @@
-$white: #ffffff;
-$black: #000000;
-$transparent: transparent;
+@import "../base/variable.scss";
+@import "../base/mixin.scss";
 
-$primary-1: "[theme:themePrimary, default:#dc1928]";
-$primary-2: #4D4F5C;
-$secondary-1: #dddddd;
-$secondary-2: #9a9a9a;
-$secondary-3: #7f8fa4;
-$scroll-width: 6px;
-$scroll-height: 3px;
-$scroll-thumb-radius: 20px;
-$scroll-thumb-bg: $secondary-2;
-$scroll-thumb-hover-bg: $primary-2;
-$scroll-track-bg: $secondary-1;
-
-
-@mixin scroll-style() {
-  &::-webkit-scrollbar {
-    width: $scroll-width;
-    height: $scroll-height;
-  }
-  &::-webkit-scrollbar-track {
-    background: $scroll-track-bg;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: $scroll-thumb-bg;
-    border-radius: $scroll-thumb-radius;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background: $scroll-thumb-hover-bg;
-  }
-}
-
-.page-title{
+.page-title {
   text-align: left;
   margin-top: 0px;
 }
-
 .holiday-card-list {
   display: flex;
   flex-wrap: wrap;
@@ -46,15 +14,37 @@ $scroll-track-bg: $secondary-1;
     font-size: 18px;
     margin: 0px;
     color: $secondary-3;
+    @include media-breakpoint-down(xxl){
+      font-size: 16px;
+    }
   }
   .holiday-card-list-item {
     flex: 0 0 auto;
     width: 25%;
     padding: 0px 10px;
     box-sizing: border-box;
-    margin-bottom: 35px;
+    margin-bottom: 20px;
+    @include media-breakpoint-down(mxs){
+      padding: 0px 25px;
+    }
+    @include media-breakpoint-down(xl){
+      width: 33.33%;
+    }
+    @include media-breakpoint-down(lg){
+      width: 50%;
+    }
+    @include media-breakpoint-down(sm){
+      width: 100%;
+    }
     .cmn-card-shadow-box {
-      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      box-shadow: $box-shadow-2;
+    }
+    &:first-child{
+      .cmn-card-shadow-box {
+        @include media-breakpoint-down(mxs){
+          margin-top: 15px;
+        }
+      }
     }
     .month-card-list {
       padding: 0px;
@@ -77,11 +67,9 @@ $scroll-track-bg: $secondary-1;
           border-radius: 6px;
           span {
             display: block;
-
             &:first-child {
               font-size: 22px;
             }
-
             &:last-child {
               font-size: 16px;
             }
@@ -90,19 +78,18 @@ $scroll-track-bg: $secondary-1;
         .right-content {
           text-align: left;
           padding-right: 30px;
-          span{
+          span {
             display: block;
           }
-          .month{
+          .month {
             font-size: 22px;
-            color: #707070;
+            color: $secondary-5;
           }
-          .year{
+          .year {
             font-size: 16px;
-            color: #dddddd;
+            color: $secondary-1;
           }
         }
-        
       }
       .top-left-center-alignment {
         height: 250px;
@@ -110,13 +97,16 @@ $scroll-track-bg: $secondary-1;
         align-items: center;
         justify-content: center;
         font-size: 12px;
-        color: #a3b2c7;
+        color: $secondary-4;
       }
     }
     .card-header {
       .card-image {
         width: 100%;
         height: 260px;
+        @include media-breakpoint-down(xs){
+          height: auto;
+        }
         img {
           width: 100%;
           height: 100%;
@@ -127,7 +117,6 @@ $scroll-track-bg: $secondary-1;
         }
       }
     }
-
     .content-box {
       padding: 0px 12px 12px;
       p {
@@ -149,67 +138,80 @@ $scroll-track-bg: $secondary-1;
         align-items: center;
         justify-content: center;
         padding: 10px 0px;
-        background-color: #ffffff;
-        border-bottom: 1px solid #dddddd;
+        background-color: $white;
+        border-bottom: 1px solid $secondary-1;
         border-radius: 6px;
         z-index: 9;
         h2 {
+          font-size: 22px;
           margin: 0px;
           text-align: center;
+          @include media-breakpoint-down(xxl){
+            font-size: 20px;
+          }
         }
       }
-      .card-body{
+      .card-body {
         height: 250px;
         min-height: 250px;
         max-height: 250px;
         overflow-x: hidden;
         overflow-y: auto;
         @include scroll-style();
+        @include media-breakpoint-down(sm){
+          height: auto;
+          min-height: 250px;
+          max-height: auto;
+          overflow-y: hidden;
+        }
       }
     }
-    .holiday-card-view-container{
+    .holiday-card-view-container {
       min-height: 450px;
-      .card-header{
+      @include media-breakpoint-down(sm){
+        min-height: auto;
+      }
+      .card-header {
         overflow: hidden;
-        .card-image{
-            position: relative;            
-            &::after{
+        .card-image {
+          position: relative;
+          &::after {
             position: absolute;
             content: "";
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: hsla(0,0%,100%,.4);
+            background-color: hsla(0, 0%, 100%, .4);
             opacity: 0;
             transition: all .5s ease 0s;
-          img{
-            transform: scale(1);
-            transition: all .5s ease 0s;
-          }
+            img {
+              transform: scale(1);
+              transition: all .5s ease 0s;
+            }
           }
         }
       }
-      &:hover{
-        .card-header{
-          .card-image{
-            &::after{
+      &:hover {
+        .card-header {
+          .card-image {
+            &::after {
               opacity: 1;
               transition: all .5s ease 0s;
             }
-            img{
+            img {
               transform: scale(1.2);
               transition: all .5s ease 0s;
             }
           }
         }
-      }      
+      }
     }
   }
-  .detail-box{
+  .detail-box {
     position: relative;
     margin: 8px 0px 12px;
-    h3{
+    h3 {
       padding-right: 30px;
     }
     .link-icon {
@@ -266,47 +268,29 @@ $scroll-track-bg: $secondary-1;
             padding: 8px 0px;
             background-color: $white;
             border: none;
-            // @include media-breakpoint-down(sm) {
-            //   min-width: 140px;
-            //   padding: 8px 8px;
-            // }
-            // @include media-breakpoint-down(xs) {
-            //   min-width: auto;
-            //   padding: 8px 10px;
-            // }
-            &::after,
-            &::before {
+            &::after, &::before {
               display: none;
             }
-            .ms-ChoiceField-innerField{
+            .ms-ChoiceField-innerField {
               padding: 0px 15px;
-              .ms-ChoiceField-iconWrapper{
-                i{
+              .ms-ChoiceField-iconWrapper {
+                i {
                   font-size: 24px;
                   color: $secondary-3;
                 }
               }
             }
-            .ms-ChoiceField-labelWrapper{
+            .ms-ChoiceField-labelWrapper {
               display: none;
-              .ms-ChoiceFieldLabel {
-                // @include text-style($fs-16, 18px, $font-regular, $primary-2);
-                // font-weight: bold;
-                // padding-left: 0px;
-                // @include media-breakpoint-down(xs) {
-                //   font-size: $fs-14;
-                //   line-height: 16px;
-                // }
-              }
             }
             &.is-checked {
               background-color: $primary-1;
               .ms-ChoiceFieldLabel {
                 color: $white;
               }
-              .ms-ChoiceField-innerField{
-                .ms-ChoiceField-iconWrapper{
-                  i{
+              .ms-ChoiceField-innerField {
+                .ms-ChoiceField-iconWrapper {
+                  i {
                     color: $white;
                   }
                 }
@@ -320,14 +304,399 @@ $scroll-track-bg: $secondary-1;
 }
 /* Switch Button - Relative Code End */
 
-.title-with-choicegroup-box{
+.title-with-choicegroup-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .page-title{
+  flex-wrap: wrap;
+  @include media-breakpoint-down(mxs){
+    padding: 0px 15px;
+  };
+  .page-title {
     padding-right: 30px;
   }
-  .switch-button-container{
+  .switch-button-container {
     flex: 0 0 auto;
   }
+  .right-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    @include media-breakpoint-down(md){
+      width: 100%;
+      justify-content: space-between;
+    }
+    .ms-Dropdown-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-right: 10px;
+      margin-bottom: 15px;
+      .ms-Dropdown {
+        .ms-Dropdown-title {
+          height: 50px;
+          display: flex;
+          align-items: center;
+          font-size: 18px;
+          border-radius: 6px;
+        }
+      }
+      .ms-Label {
+        display: block;
+        font-size: 20px;
+        line-height: 22px;
+        color: $primary-2;
+        font-weight: 600;
+        margin-right: 12px;
+        @include media-breakpoint-down(md){
+          display: none;
+        }
+        @include media-breakpoint-down(xs){
+          font-size: $fs-16;
+        }
+      }
+    }
+  }
 }
+
+.ms-Dropdown-container {
+  .ms-Dropdown {
+    .ms-Dropdown-caretDownWrapper {
+      top: 50%;
+      transform: translateY(-50%);
+      height: auto;
+      line-height: normal;
+    }
+  }
+}
+
+.ms-Layer {
+  .ms-Layer-content {
+    .ms-Callout-container {
+      .ms-Dropdown-callout {
+        .ms-Callout-main {
+          >div {
+            .ms-Dropdown-items {
+              .ms-Dropdown-item {
+                &.ms-Button {
+                  height: auto;
+                  min-height: auto;
+                  padding: 8px 8px;
+                  .ms-Button-flexContainer {
+                    .ms-Dropdown-optionText {
+                      font-size: 18px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.not-found-message-content-box {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  background: $white;
+  border-radius: 10px;
+  padding: 30px 60px;
+  margin: 50px auto 50px;
+  box-shadow: $box-shadow-2;
+  .content-box{
+    text-align: center;
+    > h3{
+      font-size: 28px;
+      margin: 0px;
+      color: $primary-1;
+    }
+    > p{
+      font-size: 20px;
+      margin: 20px 0px;
+    }
+    img{
+      width: 500px;
+    }
+    .btn-container{
+      .ms-Button--default{
+        &.ms-Button{
+          &.btn-primary-1{
+            min-width: 120px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.btn-container{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  &.btn-center{
+    justify-content: center;
+  }
+  &.btn-end{
+    justify-content: flex-end;
+  }
+  .ms-Button--default{
+    &.ms-Button{
+      &.btn-primary-1{
+        height: 40px;
+        font-size: $fs-16;
+        background-color: $primary-1;
+        border: 1px solid $primary-1;
+        color: $white;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+.ms-font-m {
+  .SPPageChrome {
+    .spAppAndPropertyPanelContainer {
+      .SPPageChrome-app {
+        #workbenchPageContent {
+          width: 100%;
+          max-width: 100%;
+          .CanvasComponent {
+            &.LCS {
+              .CanvasZone--edit {
+                max-width: 100%;
+              }
+            }
+          }
+        }
+        .ms-Fabric {
+          .mainContent {
+            #spPageCanvasContent {
+              .SPCanvas {
+                .SPCanvas-canvas {
+                  .CanvasComponent {
+                    .Canvas {
+                      > div{
+                        > div{
+                          @include media-breakpoint-down(md){
+                            padding: 0px;
+                          }
+                        }
+                      }
+                      .CanvasZone {
+                        > div {
+                          max-width: 100% !important;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Sharepoint Select Column Card issue SCSS Customize Start
+.CanvasZone{
+  .CanvasSection{
+    .ControlZone{
+      .ControlZone--control{
+        .ms-SPLegacyFabricBlock{
+          > section{
+            @include media-breakpoint-down(mxs){
+              padding: 0px;
+            }
+          }
+        }
+      }
+    }
+    &.CanvasSection-xl6{
+      .ControlZone{
+        .ControlZone--control{
+          .ms-SPLegacyFabricBlock{
+            .holiday-card-list{
+              height: 720px;
+              overflow-y: auto;
+              @include media-breakpoint-down(sm){
+                height: auto;
+                overflow-y: unset;
+              }
+              .holiday-card-list-item{
+                width: 50%;
+                @include media-breakpoint-down(xxl){
+                  width: 100%;
+                }
+                @include media-breakpoint-down(ipad){
+                  width: 50%;
+                }
+                @include media-breakpoint-down(md){
+                  width: 100%;
+                }
+                .holiday-card-list-container{
+                  .card-header{
+                    h2{
+                      @include media-breakpoint-down(xl){
+                        font-size: $fs-18;
+                      }
+                    }
+                  }
+                  .card-body{
+                    .month-card-list{
+                      .month-card-list-item{
+                        .left-content{
+                          span{
+                            &:first-child{
+                              @include media-breakpoint-down(xl){
+                                font-size: $fs-20;
+                              }
+                            }
+                            &:last-child{
+                              @include media-breakpoint-down(xl){
+                                font-size: $fs-14;
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            .title-with-choicegroup-box{
+              @include media-breakpoint-down(md){
+                display: block;
+              }
+              .right-content{
+                @include media-breakpoint-down(md){
+                  display: flex;
+                  align-items: center;
+                  margin-bottom: 15px;
+                  justify-content: space-between;
+                }
+                .ms-Dropdown-container{
+                  @include media-breakpoint-down(md){
+                    display: flex;
+                    flex-direction: column;
+                    // flex: 0 0 50%;
+                    margin-right: 0px;
+                    margin-bottom: 0px;
+                  } 
+                }
+                .switch-button-container{
+                  .ms-ChoiceFieldGroup{
+                    @include media-breakpoint-down(md){
+                      margin-bottom: 0px;
+                    }
+                    .ms-ChoiceFieldGroup-flexContainer{
+                      @include media-breakpoint-down(md){
+                        margin-bottom: 0px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    &.CanvasSection-xl4{
+      .ControlZone{
+        .ControlZone--control{
+          .ms-SPLegacyFabricBlock{
+            .holiday-card-list{
+              height: 720px;
+              overflow-y: auto;
+              @include scroll-style();
+              @include media-breakpoint-down(sm){
+                height: auto;
+                overflow-y: unset;
+              }
+              .title-with-choicegroup-box{
+                .left-content{
+                  .page-title{
+                    @include media-breakpoint-down(xxl){
+                      font-size: 18px;
+                    }
+                  }
+                }
+                .right-content{
+                  .ms-Dropdown-container{
+                    @include media-breakpoint-down(lg){
+                      width: 100%;
+                    }
+                    .ms-Label{
+                      @include media-breakpoint-down(xxl){
+                        font-size: 16px;
+                      }
+                    }
+                  }
+                  .switch-button-container{
+                    .ms-ChoiceFieldGroup{
+                      .ms-ChoiceFieldGroup-flexContainer{
+                        .ms-ChoiceField{
+                          .ms-ChoiceField-wrapper{
+                            .ms-ChoiceField-field{
+                              .ms-ChoiceField-innerField{
+                                @include media-breakpoint-down(lg){
+                                  padding: 0px 12px;
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              .holiday-card-list-item{
+                width: 100%;
+                @include media-breakpoint-down(lg){
+                  width: 50%;
+                }
+                @include media-breakpoint-down(sm){
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    &.CanvasSection-xl8{
+      .ControlZone{
+        .ControlZone--control{
+          .ms-SPLegacyFabricBlock{
+            .holiday-card-list{
+              height: 720px;
+              overflow-y: auto;
+              @include scroll-style();
+              @include media-breakpoint-down(sm){
+                height: auto;
+                overflow-y: unset;
+              }
+              .holiday-card-list-item{
+                width: 33.33%;
+                @include media-breakpoint-down(xxl){
+                  width: 50%;
+                }
+                @include media-breakpoint-down(sm){
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+// Sharepoint Select Column Card issue SCSS Customize End
