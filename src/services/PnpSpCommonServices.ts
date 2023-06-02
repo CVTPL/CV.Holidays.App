@@ -7,6 +7,7 @@ import "@pnp/sp/site-designs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import "@pnp/sp/batching";
+import "@pnp/sp/regional-settings/web";
 
 const PnpSpCommonServices = {
     _getSiteListByName: async (context: any, listName: string) => {
@@ -171,6 +172,9 @@ const PnpSpCommonServices = {
     },
     _addImage: async (sp: any, folderPath: string, file: any) => {
         return await sp.web.getFolderByServerRelativePath(folderPath).files.addUsingPath(file.fileName, file.fileContent, { Overwrite: true });
+    },
+    _getRegionalSetting: async (sp: any) => {
+        return await sp.web.regionalSettings.timeZone();
     }
 }
 export default PnpSpCommonServices;

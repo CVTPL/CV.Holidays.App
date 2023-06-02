@@ -14,7 +14,7 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
     const [selectedYear, setSelectedYear]: any = React.useState("");
     const [dateFormat, setDateFormat]: any = React.useState({ day: 'numeric', month: 'long', year: 'numeric' });
     // weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    
+
     const options: any[] = [
         {
             key: 'list',
@@ -165,7 +165,13 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
 
                                                         : ""}
                                                 </div>
-                                                <p>{festival.CV_FestivalDescription ? festival.CV_FestivalDescription : ""}</p>
+                                                <TooltipHost
+                                                    content={festival.CV_FestivalDescription}
+                                                    id={tooltipId}
+                                                    calloutProps={calloutProps}
+                                                >
+                                                    <p>{festival.CV_FestivalDescription ? festival.CV_FestivalDescription : ""}</p>
+                                                </TooltipHost>
                                             </div>
                                         </div>
                                     </div>
