@@ -30,24 +30,17 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
     if (Object.keys(this.props.context).length > 0) {
       // let siteUrl = this.props.dataSource && this.props.dataSource == "SiteLevel" ? this.props.context.pageContext.legacyPageContext.webAbsoluteUrl : this.props.context.pageContext.legacyPageContext.appBarParams.portalUrl;
       let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
-      console.log(this.props.context);
-      console.log(siteUrl);
-      console.log("_getSiteListByName");
+
       PnpSpCommonServices._getSiteListByName(this.props.context, "Holiday Details").then((response) => {
         if (response.status == 404) {//list is not available
-          console.log("list is not available");
+
           //list is not available than check site design available
-          console.log("_getSiteDesign");
           PnpSpCommonServices._getSiteDesign(this.sp).then((allSiteDesign) => {
             let checkSiteDesign = allSiteDesign.filter((ele: any) => ele.Title == "HolidayDetailsSiteDesign");
             if (checkSiteDesign.length > 0) {
               //site design is available so apply that site design to site.
-              console.log("_applySiteDesignToSite");
               return PnpSpCommonServices._applySiteDesignToSite(this.sp, checkSiteDesign[0].Id, siteUrl).then((response) => {
-                console.log("_commonFlowAfterSideDesignApply");
                 return this._commonFlowAfterSideDesignApply();
-              }).then((response) => {
-
               });
             }
             else {
@@ -218,417 +211,399 @@ export default class HolidayList extends React.Component<IHolidayListProps, any,
     let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
     let listId = "";
 
-    console.log("_getFolderByPath");
-    PnpSpCommonServices._getFolderByPath(this.props.context, "SiteAssets/Lists")
-      .then((response) => {
-        //check Lists folder in Site Assets already exists if no then create.
-        if (response.status == 200) {
-          return;
-        }
-        else {
-          console.log("_createFolder SiteAssets/Lists");
-          
-          return PnpSpCommonServices._createFolder(this.sp, "SiteAssets/Lists");
-        }
-      }).then((response) => {
-        //get list object for get ID
-        console.log("_getSiteListByName");
-        
-        return PnpSpCommonServices._getSiteListByName(this.props.context, "Holiday Details");
-      }).then(async (response) => {
-        return await response.json();
-      }).then((response) => {
-        listId = response.d.Id;
-        //create folder using list ID
-        console.log("_createFolder  SiteAssets/Lists/"+listId);
-        
-        return PnpSpCommonServices._createFolder(this.sp, "SiteAssets/Lists/" + listId + "");
-      }).then(async (response) => {
-        console.log("_setupImageObject");
-        
-        return this._setupImageObject();
-      }).then(async (response) => {
-        response.forEach(async image => {
-          console.log("_addImage");
-          
-          await PnpSpCommonServices._addImage(this.sp, "SiteAssets/Lists/" + listId + "", image);
-        });
-      }).then(async (response) => {
-        console.log("regionalSettings");
-        
-        return await this.sp.web.regionalSettings.timeZone();
-      }).then((response) => {
-        let currentYear = new Date().getFullYear();
-        let nextYear = new Date().getFullYear() + 1;
-
-        let defaultDataCurrentYear: any = [];
-        let defaultDataNextYear: any = [];
-
-        switch (response.Id) {
-          case 13://US and Canada
-            defaultDataCurrentYear = [
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "New Year's Day",
-                CV_Festival_Date: new Date("" + currentYear + "-01-01T00:00:00Z"),
-                CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
-                CV_FestivalInfoLink: {
-                  Description: "New Year's Day",
-                  Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "Memorial Day",
-                CV_Festival_Date: this.getLastMondayOfMay(currentYear),
-                CV_FestivalDescription: "Memorial Day is a federal holiday in the United States for honoring and mourning the U.S. ",
-                CV_FestivalInfoLink: {
-                  Description: "Memorial Day",
-                  Url: "https://en.wikipedia.org/wiki/Memorial_Day",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Memorial-Day.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "Independence Day (United States)",
-                CV_Festival_Date: new Date("" + currentYear + "-07-04T00:00:00Z"),
-                CV_FestivalDescription: "Independence Day, also called Fourth of July or July 4th, in the United States, the annual celebration of nationhood.",
-                CV_FestivalInfoLink: {
-                  Description: "Independence Day (United States)",
-                  Url: "https://en.wikipedia.org/wiki/Independence_Day_(United_States)",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/US-Independence-Day.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "Labor Day",
-                CV_Festival_Date: this.getFirstMondayOfSeptember(currentYear),
-                CV_FestivalDescription: "Labor Day is a federal holiday in the United States celebrated on the first Monday in September to honor and recognize the American labor movement and the works and contributions of laborers to the development and achievements of the United States.",
-                CV_FestivalInfoLink: {
-                  Description: "Labor Day",
-                  Url: "https://en.wikipedia.org/wiki/Labor_Day",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Labor-Day.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "Christmas Day",
-                CV_Festival_Date: new Date("" + currentYear + "-12-25T00:00:00Z"),
-                CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
-                CV_FestivalInfoLink: {
-                  Description: "Christmas Day",
-                  Url: "https://en.wikipedia.org/wiki/Christmas",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
-                })
-              }
-            ];
-            defaultDataNextYear = [
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "New Year's Day",
-                CV_Festival_Date: new Date("" + nextYear + "-01-01T00:00:00Z"),
-                CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
-                CV_FestivalInfoLink: {
-                  Description: "New Year's Day",
-                  Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "Memorial Day",
-                CV_Festival_Date: this.getLastMondayOfMay(nextYear),
-                CV_FestivalDescription: "Memorial Day is a federal holiday in the United States for honoring and mourning the U.S. ",
-                CV_FestivalInfoLink: {
-                  Description: "Memorial Day",
-                  Url: "https://en.wikipedia.org/wiki/Memorial_Day",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Memorial-Day.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "Independence Day (United States)",
-                CV_Festival_Date: new Date("" + nextYear + "-07-04T00:00:00Z"),
-                CV_FestivalDescription: "Independence Day, also called Fourth of July or July 4th, in the United States, the annual celebration of nationhood.",
-                CV_FestivalInfoLink: {
-                  Description: "Independence Day (United States)",
-                  Url: "https://en.wikipedia.org/wiki/Independence_Day_(United_States)",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/US-Independence-Day.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "Labor Day",
-                CV_Festival_Date: this.getFirstMondayOfSeptember(nextYear),
-                CV_FestivalDescription: "Labor Day is a federal holiday in the United States celebrated on the first Monday in September to honor and recognize the American labor movement and the works and contributions of laborers to the development and achievements of the United States.",
-                CV_FestivalInfoLink: {
-                  Description: "Labor Day",
-                  Url: "https://en.wikipedia.org/wiki/Labor_Day",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Labor-Day.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "Christmas Day",
-                CV_Festival_Date: new Date("" + nextYear + "-12-25T00:00:00Z"),
-                CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
-                CV_FestivalInfoLink: {
-                  Description: "Christmas Day",
-                  Url: "https://en.wikipedia.org/wiki/Christmas",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
-                })
-              }
-            ];
-            break;
-          case 23://INDIA
-            defaultDataCurrentYear = [
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "New Year's Day",
-                CV_Festival_Date: new Date("" + currentYear + "-01-01T00:00:00Z"),
-                CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
-                CV_FestivalInfoLink: {
-                  Description: "New Year's Day",
-                  Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "Republic Day",
-                CV_Festival_Date: new Date("" + currentYear + "-01-26T00:00:00Z"),
-                CV_FestivalDescription: "Republic Day is the day when India marks and celebrates the date on which the Constitution of India came into effect on 26 January 1950.",
-                CV_FestivalInfoLink: {
-                  Description: "Republic Day",
-                  Url: "https://en.wikipedia.org/wiki/Republic_Day_(India)",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/republic-day.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "Indian Independence Day",
-                CV_Festival_Date: new Date("" + currentYear + "-08-15T00:00:00Z"),
-                CV_FestivalDescription: "Independence Day is celebrated annually on 15 August as a public holiday in India commemorating the nation's independence from the United Kingdom on 15 August 1947.",
-                CV_FestivalInfoLink: {
-                  Description: "Indian Independence Day",
-                  Url: "https://en.wikipedia.org/wiki/Independence_Day_(India)",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/INDIA-Independence-Day.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "Gandhi Jayanti",
-                CV_Festival_Date: new Date("" + currentYear + "-10-02T00:00:00Z"),
-                CV_FestivalDescription: "Gandhi Jayanti is an event celebrated in India to mark the birthday of Mahatma Gandhi. It is celebrated annually on 2 October, and is one of the three national holidays of India.",
-                CV_FestivalInfoLink: {
-                  Description: "Gandhi Jayanti",
-                  Url: "https://en.wikipedia.org/wiki/Gandhi_Jayanti",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Gandhi-Jayanti.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "Christmas Day",
-                CV_Festival_Date: new Date("" + currentYear + "-12-25T00:00:00Z"),
-                CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
-                CV_FestivalInfoLink: {
-                  Description: "Christmas Day",
-                  Url: "https://en.wikipedia.org/wiki/Christmas",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
-                })
-              }
-            ];
-
-            defaultDataNextYear = [
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "New Year's Day",
-                CV_Festival_Date: new Date("" + nextYear + "-01-01T00:00:00Z"),
-                CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
-                CV_FestivalInfoLink: {
-                  Description: "New Year's Day",
-                  Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "Republic Day",
-                CV_Festival_Date: new Date("" + nextYear + "-01-26T00:00:00Z"),
-                CV_FestivalDescription: "Republic Day is the day when India marks and celebrates the date on which the Constitution of India came into effect on 26 January 1950.",
-                CV_FestivalInfoLink: {
-                  Description: "Republic Day",
-                  Url: "https://en.wikipedia.org/wiki/Republic_Day_(India)",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/republic-day.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "Indian Independence Day",
-                CV_Festival_Date: new Date("" + nextYear + "-08-15T00:00:00Z"),
-                CV_FestivalDescription: "Independence Day is celebrated annually on 15 August as a public holiday in India commemorating the nation's independence from the United Kingdom on 15 August 1947.",
-                CV_FestivalInfoLink: {
-                  Description: "Indian Independence Day",
-                  Url: "https://en.wikipedia.org/wiki/Independence_Day_(India)",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/INDIA-Independence-Day.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "Gandhi Jayanti",
-                CV_Festival_Date: new Date("" + nextYear + "-10-02T00:00:00Z"),
-                CV_FestivalDescription: "Gandhi Jayanti is an event celebrated in India to mark the birthday of Mahatma Gandhi. It is celebrated annually on 2 October, and is one of the three national holidays of India.",
-                CV_FestivalInfoLink: {
-                  Description: "Gandhi Jayanti",
-                  Url: "https://en.wikipedia.org/wiki/Gandhi_Jayanti",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Gandhi-Jayanti.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "Christmas Day",
-                CV_Festival_Date: new Date("" + nextYear + "-12-25T00:00:00Z"),
-                CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
-                CV_FestivalInfoLink: {
-                  Description: "Christmas Day",
-                  Url: "https://en.wikipedia.org/wiki/Christmas",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
-                })
-              }
-            ];
-            break;
-          default:
-            defaultDataCurrentYear = [
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "New Year's Day",
-                CV_Festival_Date: new Date("" + currentYear + "-01-01T00:00:00Z"),
-                CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
-                CV_FestivalInfoLink: {
-                  Description: "New Year's Day",
-                  Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + currentYear + "",
-                CV_Festival_Name: "Christmas Day",
-                CV_Festival_Date: new Date("" + currentYear + "-12-25T00:00:00Z"),
-                CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
-                CV_FestivalInfoLink: {
-                  Description: "Christmas Day",
-                  Url: "https://en.wikipedia.org/wiki/Christmas",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
-                })
-              }
-            ];
-            defaultDataNextYear = [
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "New Year's Day",
-                CV_Festival_Date: new Date("" + nextYear + "-01-01T00:00:00Z"),
-                CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
-                CV_FestivalInfoLink: {
-                  Description: "New Year's Day",
-                  Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
-                })
-              },
-              {
-                Title: "Holiday-" + nextYear + "",
-                CV_Festival_Name: "Christmas Day",
-                CV_Festival_Date: new Date("" + nextYear + "-12-25T00:00:00Z"),
-                CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
-                CV_FestivalInfoLink: {
-                  Description: "Christmas Day",
-                  Url: "https://en.wikipedia.org/wiki/Christmas",
-                },
-                CV_FestivalImage: JSON.stringify({
-                  type: 'thumbnail',
-                  serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
-                })
-              }
-            ];
-            break;
-        }
-        console.log("_addDefaultItemsInList");
-        
-        return this._addDefaultItemsInList(defaultDataCurrentYear.concat(defaultDataNextYear));
-      }).then((response) => {
-        console.log("_getCurrentYearHolidays");
-        
-        return this._getCurrentYearHolidays();
+    PnpSpCommonServices._ensureSiteAssetsLibraryexist(this.sp).then((response) => {
+      return PnpSpCommonServices._getFolderByPath(this.props.context, "SiteAssets/Lists")
+    }).then((response) => {
+      //check Lists folder in Site Assets already exists if no then create.
+      if (response.status == 200) {
+        return;
+      }
+      else {
+        return PnpSpCommonServices._createFolder(this.sp, "SiteAssets/Lists");
+      }
+    }).then((response) => {
+      return PnpSpCommonServices._getSiteListByName(this.props.context, "Holiday Details");
+    }).then(async (response) => {
+      return await response.json();
+    }).then((response) => {
+      listId = response.d.Id;
+      return PnpSpCommonServices._createFolder(this.sp, "SiteAssets/Lists/" + listId + "");
+    }).then(async (response) => {
+      return this._setupImageObject();
+    }).then(async (response) => {
+      response.forEach(async image => {
+        await PnpSpCommonServices._addImage(this.sp, "SiteAssets/Lists/" + listId + "", image);
       });
+    }).then(async (response) => {
+      return await this.sp.web.regionalSettings.timeZone();
+    }).then((response) => {
+      let currentYear = new Date().getFullYear();
+      let nextYear = new Date().getFullYear() + 1;
+
+      let defaultDataCurrentYear: any = [];
+      let defaultDataNextYear: any = [];
+
+      switch (response.Id) {
+        case 13://US and Canada
+          defaultDataCurrentYear = [
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "New Year's Day",
+              CV_Festival_Date: new Date("" + currentYear + "-01-01T00:00:00Z"),
+              CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
+              CV_FestivalInfoLink: {
+                Description: "New Year's Day",
+                Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "Memorial Day",
+              CV_Festival_Date: this.getLastMondayOfMay(currentYear),
+              CV_FestivalDescription: "Memorial Day is a federal holiday in the United States for honoring and mourning the U.S. ",
+              CV_FestivalInfoLink: {
+                Description: "Memorial Day",
+                Url: "https://en.wikipedia.org/wiki/Memorial_Day",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Memorial-Day.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "Independence Day (United States)",
+              CV_Festival_Date: new Date("" + currentYear + "-07-04T00:00:00Z"),
+              CV_FestivalDescription: "Independence Day, also called Fourth of July or July 4th, in the United States, the annual celebration of nationhood.",
+              CV_FestivalInfoLink: {
+                Description: "Independence Day (United States)",
+                Url: "https://en.wikipedia.org/wiki/Independence_Day_(United_States)",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/US-Independence-Day.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "Labor Day",
+              CV_Festival_Date: this.getFirstMondayOfSeptember(currentYear),
+              CV_FestivalDescription: "Labor Day is a federal holiday in the United States celebrated on the first Monday in September to honor and recognize the American labor movement and the works and contributions of laborers to the development and achievements of the United States.",
+              CV_FestivalInfoLink: {
+                Description: "Labor Day",
+                Url: "https://en.wikipedia.org/wiki/Labor_Day",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Labor-Day.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "Christmas Day",
+              CV_Festival_Date: new Date("" + currentYear + "-12-25T00:00:00Z"),
+              CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
+              CV_FestivalInfoLink: {
+                Description: "Christmas Day",
+                Url: "https://en.wikipedia.org/wiki/Christmas",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
+              })
+            }
+          ];
+          defaultDataNextYear = [
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "New Year's Day",
+              CV_Festival_Date: new Date("" + nextYear + "-01-01T00:00:00Z"),
+              CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
+              CV_FestivalInfoLink: {
+                Description: "New Year's Day",
+                Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "Memorial Day",
+              CV_Festival_Date: this.getLastMondayOfMay(nextYear),
+              CV_FestivalDescription: "Memorial Day is a federal holiday in the United States for honoring and mourning the U.S. ",
+              CV_FestivalInfoLink: {
+                Description: "Memorial Day",
+                Url: "https://en.wikipedia.org/wiki/Memorial_Day",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Memorial-Day.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "Independence Day (United States)",
+              CV_Festival_Date: new Date("" + nextYear + "-07-04T00:00:00Z"),
+              CV_FestivalDescription: "Independence Day, also called Fourth of July or July 4th, in the United States, the annual celebration of nationhood.",
+              CV_FestivalInfoLink: {
+                Description: "Independence Day (United States)",
+                Url: "https://en.wikipedia.org/wiki/Independence_Day_(United_States)",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/US-Independence-Day.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "Labor Day",
+              CV_Festival_Date: this.getFirstMondayOfSeptember(nextYear),
+              CV_FestivalDescription: "Labor Day is a federal holiday in the United States celebrated on the first Monday in September to honor and recognize the American labor movement and the works and contributions of laborers to the development and achievements of the United States.",
+              CV_FestivalInfoLink: {
+                Description: "Labor Day",
+                Url: "https://en.wikipedia.org/wiki/Labor_Day",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Labor-Day.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "Christmas Day",
+              CV_Festival_Date: new Date("" + nextYear + "-12-25T00:00:00Z"),
+              CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
+              CV_FestivalInfoLink: {
+                Description: "Christmas Day",
+                Url: "https://en.wikipedia.org/wiki/Christmas",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
+              })
+            }
+          ];
+          break;
+        case 23://INDIA
+          defaultDataCurrentYear = [
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "New Year's Day",
+              CV_Festival_Date: new Date("" + currentYear + "-01-01T00:00:00Z"),
+              CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
+              CV_FestivalInfoLink: {
+                Description: "New Year's Day",
+                Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "Republic Day",
+              CV_Festival_Date: new Date("" + currentYear + "-01-26T00:00:00Z"),
+              CV_FestivalDescription: "Republic Day is the day when India marks and celebrates the date on which the Constitution of India came into effect on 26 January 1950.",
+              CV_FestivalInfoLink: {
+                Description: "Republic Day",
+                Url: "https://en.wikipedia.org/wiki/Republic_Day_(India)",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/republic-day.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "Indian Independence Day",
+              CV_Festival_Date: new Date("" + currentYear + "-08-15T00:00:00Z"),
+              CV_FestivalDescription: "Independence Day is celebrated annually on 15 August as a public holiday in India commemorating the nation's independence from the United Kingdom on 15 August 1947.",
+              CV_FestivalInfoLink: {
+                Description: "Indian Independence Day",
+                Url: "https://en.wikipedia.org/wiki/Independence_Day_(India)",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/INDIA-Independence-Day.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "Gandhi Jayanti",
+              CV_Festival_Date: new Date("" + currentYear + "-10-02T00:00:00Z"),
+              CV_FestivalDescription: "Gandhi Jayanti is an event celebrated in India to mark the birthday of Mahatma Gandhi. It is celebrated annually on 2 October, and is one of the three national holidays of India.",
+              CV_FestivalInfoLink: {
+                Description: "Gandhi Jayanti",
+                Url: "https://en.wikipedia.org/wiki/Gandhi_Jayanti",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Gandhi-Jayanti.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "Christmas Day",
+              CV_Festival_Date: new Date("" + currentYear + "-12-25T00:00:00Z"),
+              CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
+              CV_FestivalInfoLink: {
+                Description: "Christmas Day",
+                Url: "https://en.wikipedia.org/wiki/Christmas",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
+              })
+            }
+          ];
+
+          defaultDataNextYear = [
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "New Year's Day",
+              CV_Festival_Date: new Date("" + nextYear + "-01-01T00:00:00Z"),
+              CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
+              CV_FestivalInfoLink: {
+                Description: "New Year's Day",
+                Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "Republic Day",
+              CV_Festival_Date: new Date("" + nextYear + "-01-26T00:00:00Z"),
+              CV_FestivalDescription: "Republic Day is the day when India marks and celebrates the date on which the Constitution of India came into effect on 26 January 1950.",
+              CV_FestivalInfoLink: {
+                Description: "Republic Day",
+                Url: "https://en.wikipedia.org/wiki/Republic_Day_(India)",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/republic-day.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "Indian Independence Day",
+              CV_Festival_Date: new Date("" + nextYear + "-08-15T00:00:00Z"),
+              CV_FestivalDescription: "Independence Day is celebrated annually on 15 August as a public holiday in India commemorating the nation's independence from the United Kingdom on 15 August 1947.",
+              CV_FestivalInfoLink: {
+                Description: "Indian Independence Day",
+                Url: "https://en.wikipedia.org/wiki/Independence_Day_(India)",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/INDIA-Independence-Day.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "Gandhi Jayanti",
+              CV_Festival_Date: new Date("" + nextYear + "-10-02T00:00:00Z"),
+              CV_FestivalDescription: "Gandhi Jayanti is an event celebrated in India to mark the birthday of Mahatma Gandhi. It is celebrated annually on 2 October, and is one of the three national holidays of India.",
+              CV_FestivalInfoLink: {
+                Description: "Gandhi Jayanti",
+                Url: "https://en.wikipedia.org/wiki/Gandhi_Jayanti",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Gandhi-Jayanti.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "Christmas Day",
+              CV_Festival_Date: new Date("" + nextYear + "-12-25T00:00:00Z"),
+              CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
+              CV_FestivalInfoLink: {
+                Description: "Christmas Day",
+                Url: "https://en.wikipedia.org/wiki/Christmas",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
+              })
+            }
+          ];
+          break;
+        default:
+          defaultDataCurrentYear = [
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "New Year's Day",
+              CV_Festival_Date: new Date("" + currentYear + "-01-01T00:00:00Z"),
+              CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
+              CV_FestivalInfoLink: {
+                Description: "New Year's Day",
+                Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + currentYear + "",
+              CV_Festival_Name: "Christmas Day",
+              CV_Festival_Date: new Date("" + currentYear + "-12-25T00:00:00Z"),
+              CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
+              CV_FestivalInfoLink: {
+                Description: "Christmas Day",
+                Url: "https://en.wikipedia.org/wiki/Christmas",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
+              })
+            }
+          ];
+          defaultDataNextYear = [
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "New Year's Day",
+              CV_Festival_Date: new Date("" + nextYear + "-01-01T00:00:00Z"),
+              CV_FestivalDescription: "New Year's Day on January 1 in the Gregorian calendar is celebrated in many countries",
+              CV_FestivalInfoLink: {
+                Description: "New Year's Day",
+                Url: "https://en.wikipedia.org/wiki/New_Year%27s_Day",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/New-Year.jpg"
+              })
+            },
+            {
+              Title: "Holiday-" + nextYear + "",
+              CV_Festival_Name: "Christmas Day",
+              CV_Festival_Date: new Date("" + nextYear + "-12-25T00:00:00Z"),
+              CV_FestivalDescription: "Christmas is celebrated by many Christians on December 25 in the Gregorian calendar.",
+              CV_FestivalInfoLink: {
+                Description: "Christmas Day",
+                Url: "https://en.wikipedia.org/wiki/Christmas",
+              },
+              CV_FestivalImage: JSON.stringify({
+                type: 'thumbnail',
+                serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + listId + "/Christmas-Day.jpg"
+              })
+            }
+          ];
+          break;
+      }
+      return this._addDefaultItemsInList(defaultDataCurrentYear.concat(defaultDataNextYear));
+    }).then((response) => {
+      return this._getCurrentYearHolidays();
+    });
   }
   //function for get date of Labor Day holiday
   private getFirstMondayOfSeptember = (year: any) => {
