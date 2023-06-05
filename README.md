@@ -13,10 +13,10 @@ Additionally, including external links provides users with even more resources a
 ![Alt text](/src/assets/img/screenshots/version-1.0.0.2/ListViewVersion1.0.0.2.png?raw=true "List View")
 
 > Card View
-![Alt text](/src/assets/img/screenshots/CardViewVersion1.0.0.2.png?raw=true "Card View")
+![Alt text](/src/assets/img/screenshots/version-1.0.0.2/CardViewVersion1.0.0.2.png?raw=true "Card View")
 
 > SharePoint List
-![Alt text](/src/assets/img/screenshots/SharePointListVersion1.0.0.2.png?raw=true "SharePoint List")
+![Alt text](/src/assets/img/screenshots/version-1.0.0.2/SharePointListVersion1.0.0.2.png?raw=true "SharePoint List")
 
 ## Used SharePoint Framework Version
 
