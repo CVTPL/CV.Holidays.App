@@ -456,52 +456,6 @@
   }
 }
 
-.ms-font-m {
-  .SPPageChrome {
-    .spAppAndPropertyPanelContainer {
-      .SPPageChrome-app {
-        #workbenchPageContent {
-          width: 100%;
-          max-width: 100%;
-          .CanvasComponent {
-            &.LCS {
-              .CanvasZone--edit {
-                max-width: 100%;
-              }
-            }
-          }
-        }
-        .ms-Fabric {
-          .mainContent {
-            #spPageCanvasContent {
-              .SPCanvas {
-                .SPCanvas-canvas {
-                  .CanvasComponent {
-                    .Canvas {
-                      > div{
-                        > div{
-                          @include media-breakpoint-down(md){
-                            padding: 0px;
-                          }
-                        }
-                      }
-                      .CanvasZone {
-                        > div {
-                          max-width: 100% !important;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 // Sharepoint Select Column Card issue SCSS Customize Start
 .CanvasZone{
   .CanvasSection{
@@ -523,6 +477,7 @@
             .holiday-card-list{
               height: 720px;
               overflow-y: auto;
+              @include scroll-style();
               @include media-breakpoint-down(sm){
                 height: auto;
                 overflow-y: unset;
