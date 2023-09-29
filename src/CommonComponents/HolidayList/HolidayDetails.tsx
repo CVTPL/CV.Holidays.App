@@ -201,7 +201,7 @@ const HolidayDetails: React.FunctionComponent<IHolidayDetailsProps> = (props) =>
 
     async function _getHolidaysYears(): Promise<any> {
         return new Promise((resolve, reject) => {
-            PnpSpCommonServices._getListItemsWithExpandStringWithFiltersAndOrderByWithTop(sp, "Holiday Details", "CV_Festival_Date", "", "", "Id", false, 4999).then((response) => {
+            PnpSpCommonServices._getListItemsWithExpandStringWithFiltersAndOrderByWithTop(sp, "Holiday Details", "CV_Festival_Date", "", "", "Id", true, 4999).then((response) => {
                 resolve(response);
             },
                 (error: any): any => {

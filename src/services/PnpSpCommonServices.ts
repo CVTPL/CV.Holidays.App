@@ -175,6 +175,9 @@ const PnpSpCommonServices = {
     },
     _getRegionalSetting: async (sp: any) => {
         return await sp.web.regionalSettings.timeZone();
+    },
+    _ensureSiteAssetsLibraryexist: async (sp: any) => {
+        return await sp.web.lists.ensureSiteAssetsLibrary();
     }
 }
 export default PnpSpCommonServices;

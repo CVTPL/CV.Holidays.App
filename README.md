@@ -10,13 +10,13 @@ Additionally, including external links provides users with even more resources a
 <!-- [picture of the solution in action, if possible] -->
 ## Screenshots
 > List View
-![Alt text](/src/assets/img/screenshots/List-View.png?raw=true "List View")
+![Alt text](/src/assets/img/screenshots/version-1.0.0.2/ListViewVersion1.0.0.2.png?raw=true "List View")
 
 > Card View
-![Alt text](/src/assets/img/screenshots/Card-View.png?raw=true "Card View")
+![Alt text](/src/assets/img/screenshots/version-1.0.0.2/CardViewVersion1.0.0.2.png?raw=true "Card View")
 
 > SharePoint List
-![Alt text](/src/assets/img/screenshots/SharePoint_List.png?raw=true "SharePoint List")
+![Alt text](/src/assets/img/screenshots/version-1.0.0.2/SharePointListVersion1.0.0.2.png?raw=true "SharePoint List")
 
 ## Used SharePoint Framework Version
 

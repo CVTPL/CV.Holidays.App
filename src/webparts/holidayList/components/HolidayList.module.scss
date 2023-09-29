@@ -1,15 +1,5 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
 
-:global(#workbenchPageContent),
-.pageContent_ecefc8ba,
-:global(.CanvasZone) {
-  max-width: none !important;
-}
-
-:global(.CanvasComponent .CanvasZone)>div {
-  max-width: none !important;
-}
-
 .holidayList {
   overflow: hidden;
   padding: 1em;
